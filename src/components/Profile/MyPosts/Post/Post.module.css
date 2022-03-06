@@ -1,0 +1,7 @@
+.item {
+    color: white;
+}
+.item__image {
+    width: 50px;
+    height: 60px;
+}

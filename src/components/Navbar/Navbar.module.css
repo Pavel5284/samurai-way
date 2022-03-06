@@ -1,0 +1,21 @@
+.nav {
+    grid-area: n;
+    background-color: green;
+}
+.items {
+    list-style-type: none;
+}
+.item {
+
+}
+.item a{
+    text-decoration: none;
+    color: white;
+}
+.item__link.active {
+    color: crimson;
+}
+
+.item a:active {
+    color: crimson;
+}
