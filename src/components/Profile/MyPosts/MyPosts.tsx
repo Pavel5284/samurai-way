@@ -5,12 +5,16 @@ import {Post} from "./Post/Post";
 
 export const MyPosts = () => {
     return (
-        <div className={s.content}>
+        <div className={s.posts__block}>
             <div>
-                My post
+                <h3>My post</h3>
                 <div>
+                    <div>
                 <textarea></textarea>
+                </div>
+                    <div>
                 <button>Add post</button>
+                </div>
             </div>
                 <div className={s.posts}>
                     <Post message="Hi, it's me"/>

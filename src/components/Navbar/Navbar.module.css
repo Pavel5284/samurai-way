@@ -12,10 +12,8 @@
     text-decoration: none;
     color: white;
 }
-.item__link.active {
-    color: crimson;
-}
 
-.item a:active {
+
+.item a.active {
     color: crimson;
 }

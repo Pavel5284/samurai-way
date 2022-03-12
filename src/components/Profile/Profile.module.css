@@ -3,14 +3,6 @@
     background-color: darkgrey;
 }
 
-.content img{
-    max-width: 100%;
-}
-
-.posts {
-
-}
-
-.item {
-    color: white;
+.description__block{
+    padding: 10px;
 }
