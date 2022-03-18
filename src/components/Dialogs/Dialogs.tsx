@@ -1,45 +1,32 @@
 import React from "react";
 import s from './Dialogs.module.css';
-import {NavLink} from "react-router-dom";
+import {DialogItem} from "./DialogItem/DialogItem";
+import {Message} from "./Message/Message";
+import {PropsDialogType, PropsMessageType} from "../../redux/state";
 
-type propsDialogType={
-    id: number
-    name: string
+
+
+type PropsType = {
+    dialogs: Array<PropsDialogType>
+    messages: Array<PropsMessageType>
 }
 
-type propsMessageType={
-    id?: number
-    message: string
-}
+export const Dialogs = (props: PropsType) => {
 
-const DialogItem = (props:propsDialogType) => {
-    let path = "/dialogs/" + props.id;
 
-    return <div className={s.dialog + ' ' + s.active}>
-        <NavLink to={path}>{props.name}</NavLink>
-    </div>
-}
+    let dialogsElements = props.dialogs
+        .map(d => <DialogItem id={d.id} name={d.name}/>);
+    
+    let messagesElements = props.messages
+        .map (m => <Message message={m.message}/>);
 
-const Message=(props: propsMessageType) => {
-    return <div className={s.message}>{props.message}</div>
-}
-
-export const Dialogs = () => {
     return (
         <div className={s.dialogs}>
             <div className={s.dialogs__items}>
-                <DialogItem name="Dimych" id={1}/>
-                <DialogItem name="Andrey" id={2}/>
-                <DialogItem name="Sveta" id={3}/>
-                <DialogItem name="Sasha" id={4}/>
-                <DialogItem name="Viktor" id={5}/>
-
+                {dialogsElements}
             </div>
             <div className={s.messages}>
-                <Message  message="Hi" />
-                <Message  message="Ha-ha" />
-                <Message  message="Hello" />
-                <Message  message="How is your samurai-way?" />
+                {messagesElements}
             </div>
         </div>
     )

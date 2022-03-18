@@ -3,6 +3,7 @@ import s from "./Post.module.css";
 
 type PostPropsType = {
     message: string
+    likesCount: number
 }
 
 export const Post = (props: PostPropsType) => {
@@ -13,8 +14,10 @@ export const Post = (props: PostPropsType) => {
                 src="https://sun9-40.userapi.com/impg/xpQLmHEXpp2_NoBuiQ5eQ7zXd_Ka7MZxToTO5g/7rzipkNl1Ng.jpg?size=460x604&quality=96&sign=d7a38b815e4dcb25457baba995df2c05&type=album"
                 alt="ava"/>
             {props.message}
+
             <div>
-                <span>like</span>
+                <span>like </span>
+                {props.likesCount}
             </div>
         </div>
     )
