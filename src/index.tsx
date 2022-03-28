@@ -1,14 +1,9 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
+import {rerenderEntireTree} from "./render";
 import {appState} from "./redux/state";
 
 
 
+rerenderEntireTree(appState);
 
-
-ReactDOM.render(
-    <App posts={appState.profilePage.posts} dialogs={appState.messagesPage.dialogs} messages={appState.messagesPage.messages}/>,
-  document.getElementById('root')
-);
