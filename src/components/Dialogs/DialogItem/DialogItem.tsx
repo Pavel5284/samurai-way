@@ -3,13 +3,6 @@ import s from './../Dialogs.module.css';
 import {NavLink} from "react-router-dom";
 import {PropsDialogType} from "../../../redux/state";
 
-/*
-
-type PropsType= {
-    id: number
-    name: string
-}
-*/
 
 
 
