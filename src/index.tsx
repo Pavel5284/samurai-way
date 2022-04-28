@@ -1,14 +1,17 @@
 import React from 'react';
 import './index.css';
-import {store} from "./redux/state";
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
+import {Provider} from "react-redux";
+import {store} from "./redux/redux-store";
 
 let rerenderEntireTree = () => {
     ReactDOM.render(
-        <App store={store} /*addPost={store.addPost} updateNewPostText={store.updateNewPostText}*//>,
-        /*<App posts={appState.profilePage.posts} dialogs={appState.messagesPage.dialogs} messages={appState.messagesPage.messages}/>,*/
+        <Provider store={store}>
+        <App store={store} />
+
+        </Provider>,
         document.getElementById('root')
     );
 }

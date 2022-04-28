@@ -1,6 +1,25 @@
 import {ActionsType, MessagesPageType, PropsMessageType} from "./state";
 
-const dialogReducer = (state: MessagesPageType, action: ActionsType) => {
+
+
+const initialState = {
+    dialogs: [
+        {id: 1, name: 'Dimych'},
+        {id: 2, name: 'Andrew'},
+        {id: 3, name: 'Sveta'},
+        {id: 4, name: 'Sasha'},
+        {id: 5, name: 'Viktor'}
+    ],
+    messages: [
+        {id: 1, message: 'Hi'},
+        {id: 2, message: 'Ha-ha'},
+        {id: 3, message: 'Hello'},
+        {id: 4, message: 'How is your samurai-way?'}
+    ],
+    newMessageBody: ''
+}
+
+const dialogReducer = (state: MessagesPageType = initialState, action: ActionsType) => {
     switch (action.type) {
         case 'UPDATE-NEW-MESSAGE-TEXT':
             state.newMessageBody = action.newMessageText;
@@ -8,7 +27,7 @@ const dialogReducer = (state: MessagesPageType, action: ActionsType) => {
         case 'SEND-MESSAGE':
             let newMessage: PropsMessageType = {
                 id: new Date().getTime(),
-                message: action.newMessage
+                message: state.newMessageBody
             }
             state.newMessageBody = '';
             state.messages.push(newMessage);
@@ -21,10 +40,9 @@ const dialogReducer = (state: MessagesPageType, action: ActionsType) => {
 export type ChangeNewMessageActionType = ReturnType<typeof ChangeNewMessageActionCreator>
 export type SendMessageActionType = ReturnType<typeof SendMessageActionCreator>
 
-export const SendMessageActionCreator = (newMessage: string) => {
+export const SendMessageActionCreator = () => {
     return {
         type: 'SEND-MESSAGE',
-        newMessage: newMessage
     } as const
 }
 

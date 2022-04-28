@@ -6,11 +6,10 @@ import {addPostActionCreator, ChangeNewTextActionCreator} from "../../../redux/p
 
 
 type MyPostsPropsType = {
-    posts: PostDataType[]
-   /* addPost: () => void*/
+     posts: PostDataType[]
     newPostText: string
-    /*updateNewPostText: (newText: string) => void*/
-    dispatch: (action: ActionsType) => void
+    addPost: () => void
+    updateNewPostText: (text: string) => void
 }
 
 
@@ -22,12 +21,13 @@ export const MyPosts = (props: MyPostsPropsType) => {
     let newPostElement = React.createRef<HTMLTextAreaElement>();
 
     const addPost = () => {
-            props.dispatch(addPostActionCreator(props.newPostText));
+            props.addPost();
         }
 
     let onPostChange = () => {
+        debugger
         if (newPostElement.current) {
-        props.dispatch( ChangeNewTextActionCreator(newPostElement.current.value));
+            props.updateNewPostText(newPostElement.current.value);
     }}
 
     return (
