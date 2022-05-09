@@ -88,25 +88,25 @@ export type AppStatePropsType = {
     profilePage: ProfilePageType
     messagesPage: MessagesPageType
 }
-export type ProfilePageType = {
+type ProfilePageType = {
     posts: PostDataType[]
     newPostText: string
 }
-export type PostDataType = {
+type PostDataType = {
     id: number
     message: string
     likesCount: number
 }
-export type MessagesPageType = {
+type MessagesPageType = {
     messages: PropsMessageType[]
     dialogs: PropsDialogType[]
     newMessageBody: string
 }
-export type PropsDialogType = {
+type PropsDialogType = {
     id: number
     name: string
 }
-export type PropsMessageType={
+type PropsMessageType={
     id?: number
     message: string
 }
@@ -147,7 +147,7 @@ export const ChangeNewMessageActionCreator = (newMessageText: string) => {
         newMessageText: newMessageText
     } as const
 }*/
-export type ActionsType = AddPostActionType | ChangeNewTextActionType | ChangeNewMessageActionType | SendMessageActionType
+type ActionsType = AddPostActionType | ChangeNewTextActionType | ChangeNewMessageActionType | SendMessageActionType
 
 
 

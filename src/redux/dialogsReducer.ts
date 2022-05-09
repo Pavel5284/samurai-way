@@ -1,6 +1,19 @@
-import {ActionsType, MessagesPageType, PropsMessageType} from "./state";
+import {ActionsType} from "./profileReducer";
 
+export type MessagesPageType = {
+    messages: PropsMessageType[]
+    dialogs: PropsDialogType[]
+    newMessageBody: string
+}
 
+export type PropsDialogType = {
+    id: number
+    name: string
+}
+export type PropsMessageType={
+    id?: number
+    message: string
+}
 
 const initialState = {
     dialogs: [
@@ -9,29 +22,36 @@ const initialState = {
         {id: 3, name: 'Sveta'},
         {id: 4, name: 'Sasha'},
         {id: 5, name: 'Viktor'}
-    ],
+    ] as PropsDialogType[],
     messages: [
         {id: 1, message: 'Hi'},
         {id: 2, message: 'Ha-ha'},
         {id: 3, message: 'Hello'},
         {id: 4, message: 'How is your samurai-way?'}
-    ],
+    ] as PropsMessageType[],
     newMessageBody: ''
 }
 
-const dialogReducer = (state: MessagesPageType = initialState, action: ActionsType) => {
+export type InitialStateType = typeof initialState
+
+const dialogReducer = (state: InitialStateType = initialState, action: ActionsType): InitialStateType=> {
     switch (action.type) {
         case 'UPDATE-NEW-MESSAGE-TEXT':
-            state.newMessageBody = action.newMessageText;
-            return  state;
+            return  {
+                ...state,
+                newMessageBody: action.newMessageText
+            };
+           /* stateCopy.newMessageBody = action.newMessageText;*/
         case 'SEND-MESSAGE':
             let newMessage: PropsMessageType = {
                 id: new Date().getTime(),
                 message: state.newMessageBody
-            }
-            state.newMessageBody = '';
-            state.messages.push(newMessage);
-            return  state;
+            };
+            return {
+                ...state,
+                newMessageBody: '',
+                messages: [...state.messages, newMessage]
+            };
         default:
             return  state;
     }

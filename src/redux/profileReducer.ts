@@ -1,4 +1,17 @@
-import {ActionsType,  PostDataType, ProfilePageType} from "./state";
+import {ChangeNewMessageActionType, SendMessageActionType} from "./dialogsReducer";
+
+/*export type ProfilePageType = {
+    posts: PostDataType[]
+    newPostText: string
+}*/
+export type PostDataType = {
+    id: number
+    message: string
+    likesCount: number
+}
+
+export type ActionsType = AddPostActionType | ChangeNewTextActionType | ChangeNewMessageActionType | SendMessageActionType
+
 
 export type AddPostActionType = ReturnType<typeof addPostActionCreator>
 export type ChangeNewTextActionType = ReturnType<typeof ChangeNewTextActionCreator>
@@ -16,7 +29,13 @@ export const ChangeNewTextActionCreator = (newText: string) => {
     } as const
 }
 
-const initialState  = {
+type InitialStateType = {
+    posts: PostDataType[],
+    newPostText: string
+
+}
+
+const initialState:  InitialStateType = {
         posts: [
             {id: 1, message: "Hi, it's me", likesCount: 12},
             {id: 2, message: 'This is first post', likesCount: 8},
@@ -27,22 +46,27 @@ const initialState  = {
 }
 
 
-const profileReducer = (state: ProfilePageType = initialState, action: ActionsType) => {
+const profileReducer = (state: InitialStateType = initialState, action: ActionsType): InitialStateType => {
 
     switch (action.type) {
         case 'ADD-POST':
-            debugger
             let newPost: PostDataType = {
                 id: new Date().getTime(),
                 message: action.newPostText,
                 likesCount: 0
             }
-            state.posts.push(newPost);
-            state.newPostText='';
-            return state;
+            return  {
+                ...state,
+                posts: [...state.posts, newPost],
+                newPostText: ''
+            };
+
+
         case 'UPDATE-NEW-POST-TEXT':
-            state.newPostText = action.newText
-            return state;
+            return {
+                ...state,
+                newPostText: action.newText
+            };
         default:
             return state;
     }

@@ -1,16 +1,15 @@
 import React, {ChangeEvent} from "react";
 import s from "./MyPosts.module.css";
 import {Post} from "./Post/Post";
-import {ActionsType,  PostDataType} from "../../../redux/state";
-import {addPostActionCreator, ChangeNewTextActionCreator} from "../../../redux/profileReducer";
+import {MyPostsPropsType} from "./MyPostsContainer";
 
-
+/*
 type MyPostsPropsType = {
      posts: PostDataType[]
     newPostText: string
     addPost: () => void
     updateNewPostText: (text: string) => void
-}
+}*/
 
 
 
@@ -21,7 +20,7 @@ export const MyPosts = (props: MyPostsPropsType) => {
     let newPostElement = React.createRef<HTMLTextAreaElement>();
 
     const addPost = () => {
-            props.addPost();
+            props.addPost(props.newPostText);
         }
 
     let onPostChange = () => {

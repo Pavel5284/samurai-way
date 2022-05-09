@@ -2,40 +2,29 @@ import React, {ChangeEvent} from "react";
 import s from './Dialogs.module.css';
 import {DialogItem} from "./DialogItem/DialogItem";
 import {Message} from "./Message/Message";
-import {
-    ActionsType,  MessagesPageType,
-    PropsDialogType,
-    PropsMessageType,
 
-} from "../../redux/state";
 import {ChangeNewMessageActionCreator, SendMessageActionCreator} from "../../redux/dialogsReducer";
 import {store, StoreAppType} from "../../redux/redux-store";
-
-
-/*
-type PropsType = {
-    dialogs: Array<PropsDialogType>
-    messages: Array<PropsMessageType>
-}*/
-
-
-export type DialogsPropsType = {
-    dialogs: PropsDialogType[]
-    message: PropsMessageType[]
-    changeNewMessage: (e: ChangeEvent<HTMLTextAreaElement>) => void
-    newMessageBody: string
-    sendMessage: () => void
-}
+import {DialogsPropsType} from "./DialogsContainer";
 
 
 
-export const Dialogs = (props: DialogsPropsType) => {
 
-    let dialogsElements = props.dialogs
-        .map(d => <DialogItem id={d.id} name={d.name}/>);
+export const Dialogs:React.FC<DialogsPropsType> = (props: DialogsPropsType) => {
 
-    let messagesElements = props.message
-        .map(m => <Message message={m.message}/>);
+    let dialogsElements = props.dialogs.dialogs
+        .map(d => <DialogItem id={d.id} key={d.id} name={d.name}/>);
+
+    let messagesElements = props.dialogs.messages
+        .map(m => <Message message={m.message} key={m.id}/>);
+
+    const onSendMessageClick = () => {
+        props.sendMessage()
+    }
+
+    const onNewMessageChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+        props.changeNewMessage(e.currentTarget.value)
+    }
 
     return (
         <div className={s.dialogs}>
@@ -45,10 +34,10 @@ export const Dialogs = (props: DialogsPropsType) => {
             <div className={s.messages}>
                 {messagesElements}
                 <textarea
-                    onChange={props.changeNewMessage}
-                    value={props.newMessageBody}
+                    onChange={onNewMessageChange}
+                    value={props.dialogs.newMessageBody}
                 />
-                <button onClick={props.sendMessage}>Send</button>
+                <button onClick={onSendMessageClick}>Send</button>
             </div>
 
         </div>
