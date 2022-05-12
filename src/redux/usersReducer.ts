@@ -1,37 +1,42 @@
 export type UsersDataType = {
     id: number
-    photoURL: string
+    photos: PhotosType
     followed: boolean
-    fullName: string
+    name: string
     status: string
     location: LocationType
+}
+export type PhotosType = {
+    small: string
+    large: string
 }
 type LocationType = {
     city: string
     country: string
 }
 
-export type ActionsType = FollowActionType | UnfollowActionType | SetUsersActionType
+export type ActionsType = FollowActionType | UnfollowActionType | SetUsersActionType | SetCurrentPageActionType | SetUsersTotalCountActionType
 
 
 export type FollowActionType = ReturnType<typeof followAC>
 export type UnfollowActionType = ReturnType<typeof unfollowAC>
 export type SetUsersActionType = ReturnType<typeof setUsersAC>
+export type SetCurrentPageActionType = ReturnType<typeof setCurrentPageAC>
+export type SetUsersTotalCountActionType = ReturnType<typeof setUsersTotalCountAC>
 
 
 type InitialStateType = {
     users: UsersDataType[]
+    pageSize: number
+    totalUsersCount: number
+    currentPage: number
 }
 
 const initialState:  InitialStateType = {
-        users: [
-            /*{id: 1, photoURL: 'https://oir.mobi/uploads/posts/2019-12/1576864907_1-2.jpg',
-                followed: false, fullName: 'Dmitry', status: 'Hello', location: {city: 'Minsk', country: 'Belarus'}},
-            {id: 2, photoURL: 'https://oir.mobi/uploads/posts/2019-12/1576864907_1-2.jpg',
-                followed: true, fullName: 'Sasha', status: 'Hello', location: {city: 'Moskow', country: 'Russia'}},
-            {id: 3, photoURL: 'https://oir.mobi/uploads/posts/2019-12/1576864907_1-2.jpg',
-                followed: false, fullName: 'Andrew', status: 'Hello', location: {city: 'Kiev', country: 'Ukraine'}}
-       */ ]
+        users: [ ],
+        pageSize: 5,
+        totalUsersCount: 0,
+        currentPage: 1
 
 }
 
@@ -52,6 +57,18 @@ export const setUsersAC = (users: UsersDataType[]) => {
     return {
         type: 'SET_USERS',
         users
+    } as const
+}
+export const setCurrentPageAC = (currentPage: number) => {
+    return{
+        type: 'SET_CURRENT_PAGE',
+        currentPage
+    } as const
+}
+export const setUsersTotalCountAC = (totalUsersCount: number) => {
+    return{
+        type: 'SET_TOTAL_USERS_COUNT',
+        totalUsersCount
     } as const
 }
 
@@ -80,7 +97,14 @@ const usersReducer = (state: InitialStateType = initialState, action: ActionsTyp
                 })
             }
         case "SET_USERS": {
-            return {...state, users: [...state.users, ...action.users]}
+            return {...state, users: action.users}
+        }
+
+        case "SET_CURRENT_PAGE": {
+            return {...state, currentPage: action.currentPage }
+        }
+        case "SET_TOTAL_USERS_COUNT": {
+            return {...state, totalUsersCount: action.totalUsersCount }
         }
 
         default:
