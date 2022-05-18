@@ -1,7 +1,7 @@
 import profileReducer, {AddPostActionType, ChangeNewTextActionType} from "./profileReducer";
 import dialogReducer, {ChangeNewMessageActionType, SendMessageActionType} from "./dialogsReducer";
 
-export let store: StoreType = {
+/*export let store: StoreType = {
     _appState: {
         profilePage: {
             posts: [
@@ -9,7 +9,8 @@ export let store: StoreType = {
                 {id: 2, message: 'This is first post', likesCount: 8},
                 {id: 3, message: 'This is second post', likesCount: 10}
             ],
-            newPostText: ''
+            newPostText: '',
+            profile: ''
         },
 
         messagesPage: {
@@ -47,7 +48,7 @@ export let store: StoreType = {
         this._appState.messagesPage = dialogReducer(this._appState.messagesPage, action)
         this._rerenderEntireTree()
 
-        /*if (action.type === 'ADD-POST') {
+        /!*if (action.type === 'ADD-POST') {
             let newPost: PostDataType = {
                 id: new Date().getTime(),
                 message: action.newPostText,
@@ -70,10 +71,10 @@ export let store: StoreType = {
             this._appState.messagesPage.newMessageBody = '';
             this._appState.messagesPage.messages.push(newMessage);
             this._rerenderEntireTree()
-        }*/
+        }*!/
     }
 
-};
+};*/
 
 
 
@@ -91,6 +92,7 @@ export type AppStatePropsType = {
 type ProfilePageType = {
     posts: PostDataType[]
     newPostText: string
+    profile: string
 }
 type PostDataType = {
     id: number
@@ -110,6 +112,29 @@ type PropsMessageType={
     id?: number
     message: string
 }
+export type ProfileType= {
+    userId: number
+    lookingForAJob: boolean
+    lookingForAJobDescription: string
+    fullName: string
+    contacts: ContactType
+    photos: UserPhotos
+}
+export type ContactType = {
+    github: string
+    vk: string
+    facebook: string
+    instagram: string
+    twitter: string
+    website: string
+    youtube: string
+    mainLink: string
+}
+export type UserPhotos = {
+    small: string | null
+    large: string | null
+}
+
 
 /*
 type AddPostActionType = ReturnType<typeof addPostActionCreator>
