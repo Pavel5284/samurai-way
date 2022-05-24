@@ -16,7 +16,7 @@ type OwnPropsType = MapStatePropsType & MapDispatchType
 
 class HeaderContainer extends React.Component<OwnPropsType>{
     componentDidMount() {
-        axios.get(`https://social-network.samuraijs.com/api/1.0/auth/mi`, {
+        axios.get(`https://social-network.samuraijs.com/api/1.0/auth/me`, {
             withCredentials: true
         })
             .then(response => {
