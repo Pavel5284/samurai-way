@@ -2,10 +2,11 @@ import React from "react";
 import {Profile} from "./Profile";
 import axios from "axios";
 import {connect} from "react-redux";
-import {setUserProfile} from "../../redux/profileReducer";
+import {getUserProfile, setUserProfile} from "../../redux/profileReducer";
 import {AppStateRootType} from "../../redux/redux-store";
 import {ProfileType} from "../../redux/state";
-import {RouteComponentProps, withRouter } from "react-router-dom";
+import {Redirect, RouteComponentProps, withRouter} from "react-router-dom";
+import {usersAPI} from "../../api/api";
 
 
 type OwnPropsType = MapStatePropsType & DispatchPropsType
@@ -18,13 +19,11 @@ class ProfileContainer extends React.Component <PropsType> {
         if (!userId) {
             userId = "2";
         }
-        axios.get(`https://social-network.samuraijs.com/api/1.0/profile/` + userId)
-            .then(response => {
-                this.props.setUserProfile(response.data);
-            });
+        this.props.getUserProfile(Number(userId))
     }
 
     render() {
+        if (!this.props.isAuth) return <Redirect to={"/login"}/>;
         return (
             <Profile {...this.props} profile={this.props.profile}/>
         )
@@ -38,14 +37,17 @@ type PathParamsType = {
 type PropsType = RouteComponentProps<PathParamsType> & OwnPropsType
 export type MapStatePropsType = {
     profile: ProfileType | null
+    isAuth: boolean
 }
 export type DispatchPropsType = {
     setUserProfile: (profile: ProfileType) => void
+    getUserProfile: (userId: number) => void
 }
 
 
 let mapStateToProps = (state: AppStateRootType) : MapStatePropsType => ({
-    profile: state.profile.profile
+    profile: state.profile.profile,
+    isAuth: state.auth.isAuth
 });
 
 let WithUrlDataContainerComponent = withRouter(ProfileContainer);
@@ -53,5 +55,5 @@ let WithUrlDataContainerComponent = withRouter(ProfileContainer);
 export default connect <MapStatePropsType,
     DispatchPropsType,
     {},
-    AppStateRootType>(mapStateToProps, {setUserProfile})
+    AppStateRootType>(mapStateToProps, {getUserProfile, setUserProfile})
     (WithUrlDataContainerComponent)

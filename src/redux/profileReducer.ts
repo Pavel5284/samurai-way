@@ -1,6 +1,8 @@
 import {ChangeNewMessageActionType, SendMessageActionType} from "./dialogsReducer";
 import {strict} from "assert";
 import {ProfileType} from "./state";
+import {usersAPI} from "../api/api";
+import {Action, Dispatch} from "redux";
 
 /*export type ProfilePageType = {
     posts: PostDataType[]
@@ -18,6 +20,8 @@ export type ActionsType = AddPostActionType | ChangeNewTextActionType | ChangeNe
 export type AddPostActionType = ReturnType<typeof addPost>
 export type ChangeNewTextActionType = ReturnType<typeof changeNewText>
 export type SetUserProfileActionType = ReturnType<typeof setUserProfile>
+// export type GetUserProfileActionType = ReturnType<typeof getUserProfile>
+
 export const addPost = (newPostText: string) => {
     return {
         type: 'ADD-POST',
@@ -36,6 +40,11 @@ export const setUserProfile = (profile: ProfileType) => {
         type: "SET_USER_PROFILE",
         profile
     } as const
+}
+export const getUserProfile = (userId: number) => (dispatch: Dispatch<ActionsType>) => {
+    usersAPI.getProfile(userId).then(response => {
+        dispatch(setUserProfile(response.data));
+    });
 }
 
 type InitialStateType = {

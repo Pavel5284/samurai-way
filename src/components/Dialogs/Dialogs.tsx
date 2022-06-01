@@ -6,6 +6,7 @@ import {Message} from "./Message/Message";
 import {ChangeNewMessageActionCreator, SendMessageActionCreator} from "../../redux/dialogsReducer";
 import {store, StoreAppType} from "../../redux/redux-store";
 import {DialogsPropsType} from "./DialogsContainer";
+import { Redirect } from "react-router-dom";
 
 
 
@@ -25,6 +26,7 @@ export const Dialogs:React.FC<DialogsPropsType> = (props: DialogsPropsType) => {
     const onNewMessageChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
         props.changeNewMessage(e.currentTarget.value)
     }
+    if (!props.isAuth) return <Redirect to={"/login"}/>;
 
     return (
         <div className={s.dialogs}>
