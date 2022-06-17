@@ -11,6 +11,9 @@ import {AppStateRootType} from "../../redux/redux-store";
 import {Users} from "./Users";
 import {Preloader} from "../common/Preloader/Preloader";
 import {usersAPI} from "../../api/api";
+import {withAutRedirect} from "../../hoc/withAuthRedirect";
+import {compose} from "redux";
+import {withRouter} from "react-router-dom";
 
 
 type MapStateToPropsType = {
@@ -21,7 +24,7 @@ type MapStateToPropsType = {
     isFetching: boolean
     followingInProgress: Array<number>
 }
-type MapDispatchToProps = {
+type MapDispatchToPropsType = {
     followSuccess: (userId: number) => void
     unfollowSuccess: (userId: number) => void
     //setUsers: (users: UsersDataType[]) => void
@@ -34,7 +37,7 @@ type MapDispatchToProps = {
 
 }
 
-export type UsersPropsType = MapStateToPropsType & MapDispatchToProps
+export type UsersPropsType = MapStateToPropsType & MapDispatchToPropsType
 
 class UsersContainer extends React.Component<UsersPropsType> {
 
@@ -94,6 +97,7 @@ const mapStateToProps = (state: AppStateRootType): MapStateToPropsType => {
     }
 }
 
+/*
 
 export default connect(mapStateToProps, {
     followSuccess,
@@ -101,4 +105,17 @@ export default connect(mapStateToProps, {
     setCurrentPage,
     toggleIsFollowingProgress,
     getUsers: getUsers
-})(UsersContainer);
+})(UsersContainer);*/
+
+
+export default compose<React.ComponentType<{}>> (
+    withAutRedirect,
+    withRouter,
+    connect<MapStateToPropsType, MapDispatchToPropsType, {}, AppStateRootType>(mapStateToProps, {
+        followSuccess,
+        unfollowSuccess,
+        setCurrentPage,
+        toggleIsFollowingProgress,
+        getUsers: getUsers
+    })
+) (UsersContainer)

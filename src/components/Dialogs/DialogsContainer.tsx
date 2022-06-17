@@ -3,27 +3,29 @@ import {ChangeNewMessageActionCreator, MessagesPageType, SendMessageActionCreato
 import {AppStateRootType, StoreAppType} from "../../redux/redux-store";
 import {Dialogs} from "./Dialogs";
 import {connect} from "react-redux";
-import {Dispatch} from "redux";
+import {compose, Dispatch} from "redux";
+import {withAutRedirect} from "../../hoc/withAuthRedirect";
+import {withRouter} from "react-router-dom";
 
 
 
-type mapStateToProps = {
+type MapStateToPropsType = {
  dialogs: MessagesPageType
-    isAuth: boolean
+   // isAuth: boolean
 }
 
-type mapDispatchToProps = {
+type MapDispatchToPropsType = {
     changeNewMessage: (body: string) => void
     sendMessage: () => void
 }
 
-export type DialogsPropsType = mapStateToProps & mapDispatchToProps
+export type DialogsPropsType = MapStateToPropsType & MapDispatchToPropsType
 
 
-let mapStateToProps = (state: AppStateRootType): mapStateToProps => {
+let mapStateToProps = (state: AppStateRootType): MapStateToPropsType => {
     return {
         dialogs: state.dialogs,
-        isAuth: state.auth.isAuth
+        //isAuth: state.auth.isAuth
     }
 }
 let mapDispatchToProps = (dispatch: Dispatch) => {
@@ -37,4 +39,9 @@ let mapDispatchToProps = (dispatch: Dispatch) => {
     }
 }
 
-export const DialogsContainer = connect (mapStateToProps, mapDispatchToProps) (Dialogs)
+/*export const DialogsContainer = connect (mapStateToProps, mapDispatchToProps) (Dialogs)*/
+ export default compose<React.ComponentType<{}>>(
+     withAutRedirect,
+     withRouter,
+     connect<MapStateToPropsType, MapDispatchToPropsType, {}, AppStateRootType> (mapStateToProps, mapDispatchToProps)
+ )(Dialogs)
