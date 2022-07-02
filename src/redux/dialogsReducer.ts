@@ -29,27 +29,20 @@ const initialState = {
         {id: 3, message: 'Hello'},
         {id: 4, message: 'How is your samurai-way?'}
     ] as PropsMessageType[],
-    newMessageBody: ''
+
 }
 
 export type InitialStateType = typeof initialState
 
 const dialogReducer = (state: InitialStateType = initialState, action: ActionsType): InitialStateType=> {
     switch (action.type) {
-        case 'UPDATE-NEW-MESSAGE-TEXT':
-            return  {
-                ...state,
-                newMessageBody: action.newMessageText
-            };
-           /* stateCopy.newMessageBody = action.newMessageText;*/
         case 'SEND-MESSAGE':
             let newMessage: PropsMessageType = {
                 id: new Date().getTime(),
-                message: state.newMessageBody
+                message: action.newMessageBody
             };
             return {
                 ...state,
-                newMessageBody: '',
                 messages: [...state.messages, newMessage]
             };
         default:
@@ -57,20 +50,16 @@ const dialogReducer = (state: InitialStateType = initialState, action: ActionsTy
     }
 }
 
-export type ChangeNewMessageActionType = ReturnType<typeof ChangeNewMessageActionCreator>
+
 export type SendMessageActionType = ReturnType<typeof SendMessageActionCreator>
 
-export const SendMessageActionCreator = () => {
+export const SendMessageActionCreator = (newMessageBody: string) => {
     return {
         type: 'SEND-MESSAGE',
+        newMessageBody
     } as const
 }
 
-export const ChangeNewMessageActionCreator = (newMessageText: string) => {
-    return {
-        type: "UPDATE-NEW-MESSAGE-TEXT",
-        newMessageText: newMessageText
-    } as const
-}
+
 
 export default dialogReducer;
