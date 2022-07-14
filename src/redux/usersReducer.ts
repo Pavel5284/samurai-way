@@ -145,12 +145,13 @@ const usersReducer = (state: InitialStateType = initialState, action: ActionsTyp
     }
 }
 
-export const getUsers = (currentPage: number, pageSize: number) => {
+export const requestUsers = (page: number, pageSize: number) => {
     return (dispatch: any) => {
         dispatch (toggleIsFetching(true));
-        usersAPI.getUsers(currentPage, pageSize).then(data => {
+        dispatch (setCurrentPage(page));
+        usersAPI.getUsers(page, pageSize).then(data => {
             console.log(data)
-            dispatch (setCurrentPage(currentPage))
+            dispatch (setCurrentPage(page))
             dispatch (setUsers(data.items));
             dispatch (setTotalUsersCount(data.totalCount));
         })
