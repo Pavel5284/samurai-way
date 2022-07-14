@@ -12,11 +12,11 @@ let rerenderEntireTree = () => {
         <BrowserRouter>
             <Provider store={store}>
                 <App/>
-
-
             </Provider>
-        </BrowserRouter>,
+        </BrowserRouter>
+      ,
         document.getElementById('root')
+
     );
 }
 

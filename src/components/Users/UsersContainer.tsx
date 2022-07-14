@@ -110,7 +110,6 @@ export default connect(mapStateToProps, {
 
 export default compose<React.ComponentType<{}>> (
     withAutRedirect,
-    withRouter,
     connect<MapStateToPropsType, MapDispatchToPropsType, {}, AppStateRootType>(mapStateToProps, {
         followSuccess,
         unfollowSuccess,

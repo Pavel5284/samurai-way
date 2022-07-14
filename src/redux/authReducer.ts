@@ -32,7 +32,7 @@ export const setAuthUserData = (payload: AutInitialStateType | null) => {
     } as const
 }
 export const getAuthUserData = () => (dispatch: Dispatch) => {
-    authAPI.me()
+   return  authAPI.me()
         .then(response => {
             if (response.data.resultCode === 0) {
                 dispatch(setAuthUserData({...response.data.data, isAuth: true}));
