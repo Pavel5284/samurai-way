@@ -14,7 +14,6 @@ type OwnPropsType = MapStatePropsType & DispatchPropsType
 class ProfileContainer extends React.Component <PropsType> {
 
     componentDidMount() {
-        debugger;
         let userId = this.props.match.params.userId
         if (!userId && this.props.authorizedUserId) {
             userId = `${this.props.authorizedUserId}`;
@@ -22,6 +21,7 @@ class ProfileContainer extends React.Component <PropsType> {
                 this.props.history.push("/login")
             }
         }
+
         this.props.getUserProfile(Number(userId));
         this.props.getStatus(Number(userId))
     }
