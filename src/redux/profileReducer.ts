@@ -13,10 +13,11 @@ export type PostDataType = {
     likesCount: number
 }
 
-export type ActionsType = AddPostActionType | SendMessageActionType | SetUserProfileActionType | SetStatusActionType
+export type ActionsType = AddPostActionType | DeletePostActionType | SendMessageActionType | SetUserProfileActionType | SetStatusActionType
 
 
 export type AddPostActionType = ReturnType<typeof addPost>
+export type DeletePostActionType = ReturnType<typeof deletePost>
 export type SetUserProfileActionType = ReturnType<typeof setUserProfile>
 export type SetStatusActionType = ReturnType<typeof setStatus>
 // export type GetUserProfileActionType = ReturnType<typeof getUserProfile>
@@ -25,6 +26,12 @@ export const addPost = (newPostText: string) => {
     return {
         type: 'ADD-POST',
         newPostText: newPostText
+    } as const
+}
+export const deletePost = (postId: number) => {
+    return {
+        type: 'DELETE-POST',
+        postId
     } as const
 }
 export const setUserProfile = (profile: ProfileType) => {
@@ -90,6 +97,8 @@ const profileReducer = (state: InitialStateType = initialState, action: ActionsT
                 ...state,
                 posts: [...state.posts, newPost],
             };
+        case 'DELETE-POST':
+          return {...state, posts:state.posts.filter(p => p.id != action.postId)};
 
         case 'SET_USER_PROFILE':
             return {

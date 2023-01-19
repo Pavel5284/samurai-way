@@ -8,31 +8,34 @@ import {Textarea} from "../../common/FormsControls/FormsControls";
 
 
 
-export const MyPosts = (props: MyPostsPropsType) => {
-    let postsElements =
-        props.posts.map(p => <Post key={p.id} id={p.id} message={p.message} likesCount={p.likesCount}/>)
+export const MyPosts = React.memo(
+    (props: MyPostsPropsType) => {
+        let postsElements =
+            props.posts.map(p => <Post key={p.id} id={p.id} message={p.message} likesCount={p.likesCount}/>)
 
-    let newPostElement = React.createRef<HTMLTextAreaElement>();
+        let newPostElement = React.createRef<HTMLTextAreaElement>();
 
-    const onAddPost = (values:FormDataType) => {
+        const onAddPost = (values:FormDataType) => {
             props.addPost(values.newPostText);
         }
 
 
 
-    return (
-        <div className={s.posts__block}>
-            <div>
-                <h3>My post</h3>
+        return (
+            <div className={s.posts__block}>
+                <div>
+                    <h3>My post</h3>
                     <AddNewPostFormRedux onSubmit={onAddPost}/>
-                <div className={s.posts}>
-                    {postsElements}
+                    <div className={s.posts}>
+                        {postsElements}
+                    </div>
                 </div>
-            </div>
 
-        </div>
-    )
-}
+            </div>
+        )
+    }
+
+)
 type FormDataType = {
     newPostText: string
 }
