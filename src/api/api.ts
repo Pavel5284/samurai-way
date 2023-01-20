@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, {AxiosResponse} from "axios";
 
 const instance = axios.create({
     withCredentials: true,
@@ -14,18 +14,29 @@ export const usersAPI = {
             .then(response => response.data)
     },
     follow(userId: number) {
-        return instance.post(`follow/${userId}`, {}
-        )
+        return instance.post<any, AxiosResponse<ResponseType>>(`follow/${userId}`).then(response => response.data)
     },
     unfollow(userId: number) {
-        return instance.delete(`follow/${userId}`)
+        return instance.delete<any, AxiosResponse<ResponseType>>(`follow/${userId}`).then(response => response.data)
     },
     getProfile(userId: number) {
-        console.warn('Obsolete method. Please profileApi object.')
        return profileAPI.getProfile(userId)
 
     }
 
+}
+
+/*export type UsersResponseType = {
+    resultCode:number,
+    messages: string,
+    data: {}
+}*/
+
+export type ResponseType<T = {}> = {
+    data: T;
+    messages: string[];
+    fieldsErrors: string[];
+    resultCode: number;
 }
 
 export const profileAPI = {

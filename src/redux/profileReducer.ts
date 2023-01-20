@@ -13,7 +13,12 @@ export type PostDataType = {
     likesCount: number
 }
 
-export type ActionsType = AddPostActionType | DeletePostActionType | SendMessageActionType | SetUserProfileActionType | SetStatusActionType
+export type ActionsType =
+    AddPostActionType
+    | DeletePostActionType
+    | SendMessageActionType
+    | SetUserProfileActionType
+    | SetStatusActionType
 
 
 export type AddPostActionType = ReturnType<typeof addPost>
@@ -46,24 +51,21 @@ export const setStatus = (status: string) => {
         status
     } as const
 }
-export const getUserProfile = (userId: number) => (dispatch: Dispatch<ActionsType>) => {
-    usersAPI.getProfile(userId).then(response => {
-        dispatch(setUserProfile(response.data));
-    });
+export const getUserProfile = (userId: number) => async (dispatch: Dispatch<ActionsType>) => {
+    const response = await usersAPI.getProfile(userId)
+    dispatch(setUserProfile(response.data));
 }
-export const getStatus = (userId: number) => (dispatch: Dispatch<ActionsType>) => {
-    profileAPI.getStatus(userId)
-        .then(response => {
-        dispatch(setStatus(response.data))
-    })
+export const getStatus = (userId: number) => async (dispatch: Dispatch<ActionsType>) => {
+    const response = await profileAPI.getStatus(userId)
+
+    dispatch(setStatus(response.data))
 }
-export const updateStatus = (status: string) => (dispatch: Dispatch<ActionsType>) => {
-    profileAPI.updateStatus(status)
-        .then(response => {
-            if (response.data.resultCode === 0) {
-                dispatch(setStatus(status))
-            }
-        })
+export const updateStatus = (status: string) => async (dispatch: Dispatch<ActionsType>) => {
+    const response = await profileAPI.updateStatus(status)
+
+    if (response.data.resultCode === 0) {
+        dispatch(setStatus(status))
+    }
 }
 
 type InitialStateType = {
@@ -72,14 +74,14 @@ type InitialStateType = {
     status: string
 }
 
-const initialState:  InitialStateType = {
-        posts: [
-            {id: 1, message: "Hi, it's me", likesCount: 12},
-            {id: 2, message: 'This is first post', likesCount: 8},
-            {id: 3, message: 'This is second post', likesCount: 10}
-        ],
-        profile: null as ProfileType | null,
-        status: ""
+const initialState: InitialStateType = {
+    posts: [
+        {id: 1, message: "Hi, it's me", likesCount: 12},
+        {id: 2, message: 'This is first post', likesCount: 8},
+        {id: 3, message: 'This is second post', likesCount: 10}
+    ],
+    profile: null as ProfileType | null,
+    status: ""
 
 }
 
@@ -93,12 +95,12 @@ const profileReducer = (state: InitialStateType = initialState, action: ActionsT
                 message: action.newPostText,
                 likesCount: 0
             }
-            return  {
+            return {
                 ...state,
                 posts: [...state.posts, newPost],
             };
         case 'DELETE-POST':
-          return {...state, posts:state.posts.filter(p => p.id != action.postId)};
+            return {...state, posts: state.posts.filter(p => p.id != action.postId)};
 
         case 'SET_USER_PROFILE':
             return {
@@ -108,15 +110,12 @@ const profileReducer = (state: InitialStateType = initialState, action: ActionsT
         case 'SET_STATUS':
             return {
                 ...state,
-                status:action.status
+                status: action.status
             }
         default:
             return state;
     }
 }
-
-
-
 
 
 export default profileReducer;
