@@ -13,18 +13,17 @@ type UsersType = {
     unfollow: (userId: number) => void
     //toggleIsFollowingProgress: (followingInProgress: boolean, userId: number) => void
     followingInProgress: Array<number>
+    portionSize: number
 }
 
 export const Users = (props: UsersType) => {
-    let pageCount = Math.ceil(props.totalUsersCount / props.pageSize);
-    let pages = [];
-    for (let i = 1; i <= pageCount; i++) {
-        pages.push(i);
-    }
+
     return <div>
         <Paginator totalUsersCount={props.totalUsersCount}
+                   portionSize={props.portionSize}
                    pageSize={props.pageSize} currentPage={props.currentPage}
                    onPageChanged={props.onPageChanged}
+
         />
         <div>
             {

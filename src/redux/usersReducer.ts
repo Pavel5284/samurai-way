@@ -40,6 +40,7 @@ type InitialStateType = {
     currentPage: number
     isFetching: boolean
     followingInProgress: Array<number>
+    portionSize: number
 }
 
 const initialState: InitialStateType = {
@@ -48,7 +49,8 @@ const initialState: InitialStateType = {
     totalUsersCount: 0,
     currentPage: 1,
     isFetching: true,
-    followingInProgress: [] as Array<number>
+    followingInProgress: [] as Array<number>,
+    portionSize: 10
 }
 
 export const followSuccess = (userId: number) => {
