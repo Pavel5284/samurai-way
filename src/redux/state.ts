@@ -118,7 +118,7 @@ export type ProfileType= {
     lookingForAJobDescription: string
     fullName: string
     contacts: ContactType
-    photos: UserPhotos
+    photos: UserPhotosType
 }
 export type ContactType = {
     github: string
@@ -130,9 +130,9 @@ export type ContactType = {
     youtube: string
     mainLink: string
 }
-export type UserPhotos = {
-    small: string | null
-    large: string | null
+export type UserPhotosType = {
+    small: string
+    large: string
 }
 
 
