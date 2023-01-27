@@ -1,7 +1,7 @@
 import React from "react";
 import {Profile} from "./Profile";
 import {connect} from "react-redux";
-import {getStatus, getUserProfile, savePhoto, savePhotoAC, setUserProfileAC, updateStatus} from "../../redux/profileReducer";
+import {getStatus, getUserProfile, savePhoto, savePhotoAC, saveProfile, setUserProfileAC, updateStatus} from "../../redux/profileReducer";
 import {AppStateRootType} from "../../redux/redux-store";
 import {ProfileType, UserPhotosType} from "../../redux/state";
 import {RouteComponentProps, withRouter} from "react-router-dom";
@@ -46,6 +46,7 @@ class ProfileContainer extends React.Component <PropsType> {
                      status={this.props.status}
                      updateStatus={this.props.updateStatus}
                      savePhoto={this.props.savePhoto}
+                     saveProfile={this.props.saveProfile}
             />
         )
     }
@@ -69,6 +70,7 @@ export type DispatchPropsType = {
     getStatus: (userId: number) => void
     updateStatus: (status: string) => void
     savePhoto: (file: string) => void
+    saveProfile: (profile: ProfileType) => void
 }
 
 
@@ -85,7 +87,8 @@ export default compose<React.ComponentType>(
         getUserProfile,
         getStatus,
         updateStatus,
-        savePhoto
+        savePhoto,
+        saveProfile
     }),
     withRouter,
     withAutRedirect

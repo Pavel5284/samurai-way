@@ -4,7 +4,7 @@ import {ThunkDispatch} from "redux-thunk";
 import {AppStateRootType} from "./redux-store";
 import {stopSubmit} from "redux-form";
 
-export type ActionsType = SetUserDataActionType
+export type ActionsAuthType = SetUserDataActionType
 
 
 export type SetUserDataActionType = ReturnType<typeof setAuthUserData>
@@ -67,7 +67,7 @@ export const logout = () => async (dispatch: Dispatch) => {
 }
 
 
-const autReducer = (state: AutInitialStateType = initialState, action: ActionsType): AutInitialStateType => {
+const autReducer = (state: AutInitialStateType = initialState, action: ActionsAuthType): AutInitialStateType => {
 
     switch (action.type) {
         case 'auth/SET_USER_DATA':

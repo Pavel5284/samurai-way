@@ -1,4 +1,4 @@
-import {ActionsType} from "./profileReducer";
+import {ActionsProfileType} from "./profileReducer";
 
 export type MessagesPageType = {
     messages: PropsMessageType[]
@@ -34,7 +34,7 @@ const initialState = {
 
 export type InitialStateType = typeof initialState
 
-const dialogReducer = (state: InitialStateType = initialState, action: ActionsType): InitialStateType=> {
+const dialogReducer = (state: InitialStateType = initialState, action: ActionsProfileType): InitialStateType=> {
     switch (action.type) {
         case 'SEND-MESSAGE':
             let newMessage: PropsMessageType = {
@@ -51,7 +51,7 @@ const dialogReducer = (state: InitialStateType = initialState, action: ActionsTy
 }
 
 
-export type SendMessageActionType = ReturnType<typeof SendMessageActionCreator>
+export type ActionsDialogsType = ReturnType<typeof SendMessageActionCreator>
 
 export const SendMessageActionCreator = (newMessageBody: string) => {
     return {

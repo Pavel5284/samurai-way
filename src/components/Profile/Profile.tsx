@@ -10,12 +10,14 @@ type ProfilePropsType = {
     updateStatus: (status: string) => void
     isOwner: boolean
     savePhoto: (photo: string) => void
+    saveProfile: (profile: ProfileType) => void
 }
 
 export const Profile = (props: ProfilePropsType) => {
     return (
         <div className={s.content}>
             <ProfileInfo
+                saveProfile={props.saveProfile}
                 savePhoto={props.savePhoto}
                 isOwner={props.isOwner}
                 profile={props.profile}

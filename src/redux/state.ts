@@ -1,5 +1,5 @@
 import profileReducer, {AddPostActionType} from "./profileReducer";
-import dialogReducer, { SendMessageActionType} from "./dialogsReducer";
+import dialogReducer, { ActionsDialogsType} from "./dialogsReducer";
 
 /*export let store: StoreType = {
     _appState: {
@@ -117,6 +117,7 @@ export type ProfileType= {
     lookingForAJob: boolean
     lookingForAJobDescription: string
     fullName: string
+    aboutMe: string
     contacts: ContactType
     photos: UserPhotosType
 }
@@ -172,7 +173,7 @@ export const ChangeNewMessageActionCreator = (newMessageText: string) => {
         newMessageText: newMessageText
     } as const
 }*/
-type ActionsType = AddPostActionType | SendMessageActionType
+type ActionsType = AddPostActionType | ActionsDialogsType
 
 
 

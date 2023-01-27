@@ -1,7 +1,9 @@
-import {SendMessageActionType} from "./dialogsReducer";
+import {ActionsDialogsType} from "./dialogsReducer";
 import {ProfileType, UserPhotosType} from "./state";
 import {profileAPI, usersAPI} from "../api/api";
 import {Dispatch} from "redux";
+import {ThunkDispatchType, ThunkType} from "./usersReducer";
+import {stopSubmit} from "redux-form";
 
 /*export type ProfilePageType = {
     posts: PostDataType[]
@@ -13,13 +15,14 @@ export type PostDataType = {
     likesCount: number
 }
 
-export type ActionsType =
+export type ActionsProfileType =
     AddPostActionType
     | DeletePostActionType
-    | SendMessageActionType
+    | ActionsDialogsType
     | SetUserProfileActionType
     | SetStatusActionType
     | SavePhotoActionType
+    | SaveProfileActionType
 
 
 export type AddPostActionType = ReturnType<typeof addPostAC>
@@ -27,6 +30,7 @@ export type DeletePostActionType = ReturnType<typeof deletePostAC>
 export type SetUserProfileActionType = ReturnType<typeof setUserProfileAC>
 export type SetStatusActionType = ReturnType<typeof setStatusAC>
 export type SavePhotoActionType = ReturnType<typeof savePhotoAC>
+export type SaveProfileActionType = ReturnType<typeof saveProfileAC>
 
 export const addPostAC = (newPostText: string) => {
     return {
@@ -58,27 +62,44 @@ export const savePhotoAC = (photos: UserPhotosType) => {
         photos
     } as const
 }
+export const saveProfileAC = (profile: ProfileType) => {
+    return {
+        type: "SAVE_PROFILE",
+        profile
+    } as const
+}
 
-export const getUserProfile = (userId: number) => async (dispatch: Dispatch<ActionsType>) => {
+export const getUserProfile = (userId: number) => async (dispatch: Dispatch<ActionsProfileType>) => {
     const response = await usersAPI.getProfile(userId)
     dispatch(setUserProfileAC(response.data));
 }
-export const getStatus = (userId: number) => async (dispatch: Dispatch<ActionsType>) => {
+export const getStatus = (userId: number) => async (dispatch: Dispatch<ActionsProfileType>) => {
     const response = await profileAPI.getStatus(userId)
 
     dispatch(setStatusAC(response.data))
 }
-export const updateStatus = (status: string) => async (dispatch: Dispatch<ActionsType>) => {
+export const updateStatus = (status: string) => async (dispatch: Dispatch<ActionsProfileType>) => {
     const response = await profileAPI.updateStatus(status)
 
     if (response.data.resultCode === 0) {
         dispatch(setStatusAC(status))
     }
 }
-export const savePhoto = (file: string) => async (dispatch: Dispatch<ActionsType>) => {
+export const savePhoto = (file: string) => async (dispatch: Dispatch<ActionsProfileType>) => {
     const response = await profileAPI.savePhoto(file)
     if (response.data.resultCode === 0) {
         dispatch(savePhotoAC(response.data.data.photos))
+    }
+}
+export const saveProfile = (profile: ProfileType): ThunkType => async (dispatch: ThunkDispatchType, getState: any) => {
+    const userId = getState().auth.userId
+    let response = await profileAPI.saveProfile(profile)
+
+    if (response.data.resultCode === 0) {
+        dispatch(getUserProfile(userId))
+    } else {
+        dispatch(stopSubmit('edit-profile', {_error: response.data.messages[0]}))
+        return Promise.reject(response.data.messages[0])
     }
 }
 
@@ -101,7 +122,7 @@ const initialState: InitialStateType = {
 }
 
 
-const profileReducer = (state: InitialStateType = initialState, action: ActionsType): InitialStateType => {
+const profileReducer = (state: InitialStateType = initialState, action: ActionsProfileType): InitialStateType => {
 
     switch (action.type) {
         case 'ADD-POST':
@@ -130,7 +151,13 @@ const profileReducer = (state: InitialStateType = initialState, action: ActionsT
         case "SAVE_PHOTO_SUCCESS": {
             return {
                 ...state,
-                profile: {...state.profile!, photos:action.photos}
+                profile: {...state.profile!, photos: action.photos}
+            }
+        }
+        case "SAVE_PROFILE": {
+            return {
+                ...state,
+                profile: action.profile
             }
         }
         default:
