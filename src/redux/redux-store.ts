@@ -3,9 +3,10 @@ import profileReducer, {ActionsProfileType} from "./profileReducer";
 import dialogReducer, {ActionsDialogsType} from "./dialogsReducer";
 import usersReducer, {ActionsUserType} from "./usersReducer";
 import autReducer, {ActionsAuthType, SetUserDataActionType} from "./authReducer";
-import thunkMiddleware from "redux-thunk";
+import thunkMiddleware, { ThunkDispatch } from "redux-thunk";
 import {reducer as formReducer} from 'redux-form';
 import appReducer, {ActionsAppType, InitializedSuccessActionType} from "./appReducer";
+import {TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 
 export type ActionsTypes =
     ActionsProfileType
@@ -29,6 +30,10 @@ const store = createStore(rootReducer, applyMiddleware(thunkMiddleware)
 );
 
 export type AppStateRootType = ReturnType<typeof rootReducer>
+
+export type AppDispatch = ThunkDispatch<AppStateRootType, unknown, ActionsTypes>
+export const useAppDispatch = () => useDispatch<AppDispatch>();
+export const useAppSelector: TypedUseSelectorHook<AppStateRootType> = useSelector
 
 //export const store = createStore(rootReducer, applyMiddleware(thunkMiddleware))
 export type StoreAppType = typeof store

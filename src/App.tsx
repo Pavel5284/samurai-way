@@ -10,10 +10,10 @@ import {AppInitialStateType, initializeApp} from "./redux/appReducer";
 import store, {AppStateRootType} from "./redux/redux-store";
 import {Preloader} from "./components/common/Preloader/Preloader";
 import {withSuspense} from "./hoc/withSuspense";
+import { LoginForm } from './components/Login/Login';
 
 const DialogsContainer = React.lazy(() => import("./components/Dialogs/DialogsContainer"));
 const ProfileContainer = React.lazy(() => import("./components/Profile/ProfileContainer"));
-const Login = React.lazy(() => import("./components/Login/Login"));
 
 
 type MapStatePropsType = {
@@ -47,7 +47,7 @@ class App extends React.Component<AppPropsType, {}> {
                         <Route path='/profile/:userId?' render={withSuspense(ProfileContainer)}/>
                         <Route path='/dialogs' render={withSuspense(DialogsContainer)}/>
                         <Route path='/users' render={() => <UsersContainer/>}/>
-                        <Route path='/login' render={withSuspense(Login)}/>
+                        <Route path='/login' render={withSuspense(LoginForm)}/>
                     </div>
                 </div>
         );
