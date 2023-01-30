@@ -4,11 +4,9 @@ import {profileAPI, usersAPI} from "../api/api";
 import {Dispatch} from "redux";
 import {ThunkDispatchType, ThunkType} from "./usersReducer";
 import {stopSubmit} from "redux-form";
+import {setAppError} from "./appReducer";
 
-/*export type ProfilePageType = {
-    posts: PostDataType[]
-    newPostText: string
-}*/
+
 export type PostDataType = {
     id: number
     message: string
@@ -69,23 +67,26 @@ export const saveProfileAC = (profile: ProfileType) => {
     } as const
 }
 
-export const getUserProfile = (userId: number) => async (dispatch: Dispatch<ActionsProfileType>) => {
+export const getUserProfile = (userId: number): ThunkType => async (dispatch: ThunkDispatchType) => {
     const response = await usersAPI.getProfile(userId)
     dispatch(setUserProfileAC(response.data));
 }
-export const getStatus = (userId: number) => async (dispatch: Dispatch<ActionsProfileType>) => {
+export const getStatus = (userId: number): ThunkType => async (dispatch: ThunkDispatchType) => {
     const response = await profileAPI.getStatus(userId)
 
     dispatch(setStatusAC(response.data))
 }
-export const updateStatus = (status: string) => async (dispatch: Dispatch<ActionsProfileType>) => {
-    const response = await profileAPI.updateStatus(status)
-
-    if (response.data.resultCode === 0) {
-        dispatch(setStatusAC(status))
+export const updateStatus = (status: string): ThunkType => async (dispatch: ThunkDispatchType) => {
+    try {
+        const response = await profileAPI.updateStatus(status)
+        if (response.data.resultCode === 0) {
+            dispatch(setStatusAC(status))
+    }
+    } catch (error: any) {
+        dispatch(setAppError(error.message))
     }
 }
-export const savePhoto = (file: string) => async (dispatch: Dispatch<ActionsProfileType>) => {
+export const savePhoto = (file: string): ThunkType => async (dispatch: ThunkDispatchType) => {
     const response = await profileAPI.savePhoto(file)
     if (response.data.resultCode === 0) {
         dispatch(savePhotoAC(response.data.data.photos))
@@ -104,19 +105,16 @@ export const saveProfile = (profile: ProfileType): ThunkType => async (dispatch:
 }
 
 
-type InitialStateType = {
-    posts: PostDataType[],
-    profile: null | ProfileType
-    status: string
-}
+type InitialStateType = typeof initialState
 
-const initialState: InitialStateType = {
+const initialState = {
+    messageForNewPost: '',
     posts: [
         {id: 1, message: "Hi, it's me", likesCount: 12},
         {id: 2, message: 'This is first post', likesCount: 8},
         {id: 3, message: 'This is second post', likesCount: 10}
     ],
-    profile: null as ProfileType | null,
+    profile: null as null| ProfileType,
     status: ""
 
 }

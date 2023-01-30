@@ -1,17 +1,13 @@
 import React from "react";
-import {Field, InjectedFormProps, reduxForm} from "redux-form";
-import {createField} from "../common/FormsControls/FormsControls";
-import {required} from "../../utils/validators/validators";
 import {login} from "../../redux/authReducer";
-import {connect} from "react-redux";
 import {Redirect} from "react-router-dom";
-import s from "./../common/FormsControls/FormsControls.module.css"
-import {AppStateRootType, useAppDispatch, useAppSelector} from "../../redux/redux-store";
+import {useAppDispatch, useAppSelector} from "../../redux/redux-store";
 import {useFormik} from "formik";
 import Input from "antd/es/input";
-import {Space} from "antd";
+import {Button, Space} from "antd";
 import Checkbox from "antd/es/checkbox/Checkbox";
 import {EyeInvisibleOutlined, EyeTwoTone} from "@ant-design/icons";
+import styles from './Login.module.css'
 
 
 type FormikErrorType = {
@@ -60,60 +56,38 @@ export const LoginForm = () => {
     return (
         <div>
             <h1>Login</h1>
-            <div>
+            <div className={styles.container}>
+                <form  className={styles.form} onSubmit={formik.handleSubmit}>
+                    <Space direction="vertical">
+                        <Input placeholder="Login"
+                               {...formik.getFieldProps('email')}
+                        />
+                        {formik.errors.email && formik.touched.email &&
+                            <div className={styles.error}>{formik.errors.email}</div>}
 
-            </div>
+                        <Input.Password
+                            placeholder="Password"
+                            {...formik.getFieldProps('password')}
+                            iconRender={visible => (visible ?  <EyeTwoTone/> : <EyeInvisibleOutlined/>)}
+                        />
+                    </Space>
+                    {formik.errors.password && formik.touched.password &&
+                        <div className={styles.error}>{formik.errors.password}</div>}
+                    <div>
+                        <Checkbox
+                            checked={formik.values.rememberMe}
+                            {...formik.getFieldProps('rememberMe')}
+                        /> Remember me
+                    </div>
 
-            <form onSubmit={formik.handleSubmit}>
-                <Space direction="vertical">
-                    <Input placeholder="Login"
-                           {...formik.getFieldProps('email')}
-                    />
-                    {formik.errors.email && formik.touched.email && <div>{formik.errors.email}</div>}
-
-                    <Input.Password
-                        placeholder="Password"
-                        {...formik.getFieldProps('password')}
-                        iconRender={visible => (visible ?  <EyeTwoTone/> : <EyeInvisibleOutlined/>)}
-                    />
-                </Space>
-                {formik.errors.password && formik.touched.password && <div>{formik.errors.password}</div>}
-                <div>
-                    <Checkbox
-                        checked={formik.values.rememberMe}
-                        {...formik.getFieldProps('rememberMe')}
-                    /> Remember me
-                </div>
-
-                {captchaUrl && <img src={captchaUrl} alt={'captcha'}/>}
-                {captchaUrl && <input
+                    {captchaUrl && <img src={captchaUrl} alt={'captcha'}/>}
+                    {captchaUrl && <input
                         {...formik.getFieldProps('captchaUrl')}
                     />}
-                <button type="submit">Login</button>
-            </form>
+                    <Button type="default" htmlType='submit'>Login</Button>
+                </form>
+            </div>
+
         </div>
     )
 }
-{/*
-
-const LoginReduxForm = reduxForm<FormDataType>({
-    form: 'login'
-})(LoginForm)
-
-const Login = (props: any) => {
-    const onSubmit = (formData: FormDataType) => {
-        props.login(formData.email, formData.password, formData.rememberMe)
-    }
-    if (props.isAuth) {
-        return <Redirect to={"/profile"}/>
-    }
-    return <div>
-        <h1>LOGIN</h1>
-        <LoginReduxForm onSubmit={onSubmit} captchaUrl={props.captchaUrl}/>
-    </div>
-}
-const mapStateToProps = (state: any) => ({
-    captchaUrl: state.auth.captchaUrl,
-    isAuth: state.auth.isAuth
-})
-export default connect(mapStateToProps, {login})(Login);*/}

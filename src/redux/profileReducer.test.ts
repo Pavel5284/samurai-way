@@ -2,6 +2,7 @@ import profileReducer, {addPostAC, deletePostAC} from "./profileReducer";
 import {ProfileType} from "./state";
 
 let state = {
+    messageForNewPost: '',
     posts: [
         {id: 1, message: "Hi, it's me", likesCount: 12},
         {id: 2, message: 'This is first post', likesCount: 8},

@@ -1,3 +1,4 @@
+import Input from "antd/es/input";
 import React, {ChangeEvent} from "react";
 
 
@@ -46,7 +47,7 @@ class ProfileStatus extends React.Component<any, any> {
                 }
                 {this.state.editMode &&
                 <div>
-                    <input onChange={this.onStatusChange} autoFocus={true} onBlur={this.deactivateEditMode} value={this.state.status}/>
+                    <Input onChange={this.onStatusChange} autoFocus={true} onBlur={this.deactivateEditMode} value={this.state.status}/>
                 </div>
                 }
             </div>

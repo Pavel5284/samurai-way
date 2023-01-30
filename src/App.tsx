@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.css';
 import {Navbar} from "./components/Navbar/Navbar";
-import {HashRouter, Route, withRouter} from "react-router-dom"
+import {HashRouter, Route, Switch, withRouter} from "react-router-dom"
 import UsersContainer from "./components/Users/UsersContainer";
 import HeaderContainer from "./components/Header/HeaderContainer";
 import {connect, Provider} from "react-redux";
@@ -11,6 +11,7 @@ import store, {AppStateRootType} from "./redux/redux-store";
 import {Preloader} from "./components/common/Preloader/Preloader";
 import {withSuspense} from "./hoc/withSuspense";
 import { LoginForm } from './components/Login/Login';
+import {notification} from "antd";
 
 const DialogsContainer = React.lazy(() => import("./components/Dialogs/DialogsContainer"));
 const ProfileContainer = React.lazy(() => import("./components/Profile/ProfileContainer"));
@@ -18,18 +19,40 @@ const ProfileContainer = React.lazy(() => import("./components/Profile/ProfileCo
 
 type MapStatePropsType = {
     initialized: boolean,
+    globalError: string | null
 }
 
 type MapDispatchToProps = {
     initializeApp: () => void
 }
 
-type AppPropsType = AppInitialStateType & MapDispatchToProps
+type AppPropsType = MapStatePropsType & MapDispatchToProps
 
-class App extends React.Component<AppPropsType, {}> {
+class App extends React.Component<AppPropsType> {
+    catchAllUnhandledErrors = (promiseRejectionEvent: PromiseRejectionEvent) => {
+        alert('Some error occured')
+        console.error(promiseRejectionEvent)
+    }
 
     componentDidMount() {
         this.props.initializeApp();
+        window.addEventListener('unhandledrejection', this.catchAllUnhandledErrors)
+    }
+
+    componentWillUnmount() {
+        window.removeEventListener('unhandledrejection', this.catchAllUnhandledErrors)
+    }
+
+    openNotificationWithIcon = (type: 'error') => {
+        notification[type]({
+            message: this.props.globalError
+        })
+    }
+
+    componentDidUpdate() {
+        if (this.props.globalError) {
+            this.openNotificationWithIcon('error')
+        }
     }
 
     render() {
@@ -43,24 +66,29 @@ class App extends React.Component<AppPropsType, {}> {
                     <HeaderContainer/>
                     <Navbar/>
                     <div className='app-wrapper-content'>
-
+                        <Switch>
+                        <Route exact path='/' render={withSuspense(ProfileContainer)}/>
                         <Route path='/profile/:userId?' render={withSuspense(ProfileContainer)}/>
                         <Route path='/dialogs' render={withSuspense(DialogsContainer)}/>
                         <Route path='/users' render={() => <UsersContainer/>}/>
-                        <Route path='/login' render={withSuspense(LoginForm)}/>
+                        <Route path='/login' render={()=> <LoginForm/>}/>
+                        <Route path='*' render={()=> <div>404 NOT FOUND</div>}/>
+                    </Switch>
                     </div>
                 </div>
         );
     }
 }
 
-const mapStateToProps = (state: AppStateRootType): AppInitialStateType => ({
-    initialized: state.app.initialized
+const mapStateToProps = (state: AppStateRootType): MapStatePropsType => ({
+    initialized: state.app.initialized,
+    globalError: state.app.globalError
 })
 
 let AppContainer = compose<React.ComponentType>(withRouter,
     connect<MapStatePropsType, MapDispatchToProps, {}, AppStateRootType>
     (mapStateToProps, {initializeApp}))(App);
+
 const SamuraiJSApp = () => {
     return <HashRouter>
         <Provider store={store}>

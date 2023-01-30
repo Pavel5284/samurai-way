@@ -2,26 +2,29 @@ import React from "react";
 import s from './Dialogs.module.css';
 import {DialogItem} from "./DialogItem/DialogItem";
 import {Message} from "./Message/Message";
-import {DialogsPropsType} from "./DialogsContainer";
-import {Field, InjectedFormProps, reduxForm} from "redux-form";
-import {Textarea} from "../common/FormsControls/FormsControls";
-import {maxLengthCreator, required} from "../../utils/validators/validators";
+import { Redirect } from "react-router-dom";
+import {PropsDialogType, PropsMessageType} from "../../redux/dialogsReducer";
+import {AddMessageFormRedux} from "./AddMessageForm/AddMessageForm";
+
+type DialogsPropsType = {
+    dialogs: PropsDialogType[]
+    messages: PropsMessageType[]
+    newMessageBody: string
+    sendMessage: (values: string) => void
+    isAuth: boolean
+}
+
+export const Dialogs = (props: DialogsPropsType) => {
+    let dialogsElements = props.dialogs.map(d => <DialogItem id={d.id} key={d.id} name={d.name} avatar={d.avatar}/>);
+
+    let messagesElements = props.messages.map(m => <Message message={m.message} key={m.id} id={m.id}/>);
 
 
-
-export const Dialogs:React.FC<DialogsPropsType> = (props: DialogsPropsType) => {
-
-    let dialogsElements = props.dialogs.dialogs
-        .map(d => <DialogItem id={d.id} key={d.id} name={d.name}/>);
-
-    let messagesElements = props.dialogs.messages
-        .map(m => <Message message={m.message} key={m.id}/>);
-
-
-    const addNewMessage = (values:FormDataType) => {
+    const addNewMessage = (values:{newMessageBody: string}) => {
        props.sendMessage(values.newMessageBody)
+        values.newMessageBody = ''
     }
-   // if (!props.isAuth) return <Redirect to={"/login"}/>;
+    if (!props.isAuth) return <Redirect to={"/login"}/>;
 
     return (
         <div className={s.dialogs}>
@@ -37,21 +40,3 @@ export const Dialogs:React.FC<DialogsPropsType> = (props: DialogsPropsType) => {
     )
 }
 
-type FormDataType = {
-    newMessageBody: string
-}
-const maxLength50 = maxLengthCreator(50);
-const AddMessageForm: React.FC<InjectedFormProps<FormDataType>> = (props) => {
-    return (
-        <form onSubmit={props.handleSubmit}>
-            <div>
-                <Field component={Textarea}
-                        validate={[required, maxLength50]}
-                       name="newMessageBody" placeholder="Enter your message"/>
-        </div>
-            <button>Send</button>
-        </form>
-    )
-}
-
-const AddMessageFormRedux = reduxForm<FormDataType>({form: "dialogAddMessageForm"}) (AddMessageForm);

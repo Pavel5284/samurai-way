@@ -9,6 +9,7 @@ export type MessagesPageType = {
 export type PropsDialogType = {
     id: number
     name: string
+    avatar: string
 }
 export type PropsMessageType={
     id?: number

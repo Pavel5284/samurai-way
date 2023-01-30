@@ -1,22 +1,23 @@
-import React, {ChangeEvent} from "react";
+import React from "react";
 import s from "./MyPosts.module.css";
-import {Post} from "./Post/Post";
-import {MyPostsPropsType} from "./MyPostsContainer";
-import {Field, InjectedFormProps, reduxForm} from "redux-form";
-import {maxLengthCreator, required} from "../../../utils/validators/validators";
-import {Textarea} from "../../common/FormsControls/FormsControls";
+import {Post, PostType} from "./Post/Post";
+import {AddNewPostFormRedux} from "./AddNewPostForm/AddNewPostForm";
 
-
+type PropsType = {
+    posts: PostType[]
+    messageForNewPost: string
+    addPost: (postMessage: string) => void
+}
 
 export const MyPosts = React.memo(
-    (props: MyPostsPropsType) => {
+    (props: PropsType) => {
         let postsElements =
             props.posts.map(p => <Post key={p.id} id={p.id} message={p.message} likesCount={p.likesCount}/>)
 
-        let newPostElement = React.createRef<HTMLTextAreaElement>();
 
-        const onAddPost = (values:FormDataType) => {
-            props.addPost(values.newPostText);
+        const onAddPost = (values:{newPostText: string}) => {
+            props.addPost(values.newPostText)
+            values.newPostText = ''
         }
 
 
@@ -36,22 +37,3 @@ export const MyPosts = React.memo(
     }
 
 )
-type FormDataType = {
-    newPostText: string
-}
-
-const maxLength10 = maxLengthCreator(10);
-
-const AddNewPostForm: React.FC<InjectedFormProps<FormDataType>>  = (props) => {
-    return <form onSubmit={props.handleSubmit}>
-        <div>
-            <Field component={Textarea} name="newPostText" placeholder={"Post message"}
-                validate={[required, maxLength10]}
-            />
-        </div>
-        <div>
-            <button>Add post</button>
-        </div>
-    </form>
-}
-const AddNewPostFormRedux = reduxForm<FormDataType>({form: "ProfileAddNewPostForm"}) (AddNewPostForm)

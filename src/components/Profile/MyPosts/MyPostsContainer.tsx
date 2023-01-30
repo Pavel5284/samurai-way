@@ -8,18 +8,17 @@ import {Dispatch} from "redux";
 
 type MapStatePropsType = {
     posts: PostDataType[]
-
+    messageForNewPost: string
 }
 type mapDispatchToPropsType = {
     addPost: (text: string) => void
 }
 
-export type MyPostsPropsType = MapStatePropsType & mapDispatchToPropsType
-
 
 const mapStateToProps = (state: AppStateRootType): MapStatePropsType=> {
     return {
-        posts: state.profile.posts
+        posts: state.profile.posts,
+        messageForNewPost: state.profile.messageForNewPost
     }
 }
 
@@ -31,4 +30,4 @@ const mapDispatchToProps = (dispatch: Dispatch) : mapDispatchToPropsType=> {
     }
 }
 
-export const MyPostsContainer = connect(mapStateToProps, mapDispatchToProps) (MyPosts)
+export const MyPostsContainer = connect<MapStatePropsType, mapDispatchToPropsType, {}, AppStateRootType>(mapStateToProps, mapDispatchToProps) (MyPosts)

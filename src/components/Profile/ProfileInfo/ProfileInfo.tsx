@@ -6,6 +6,7 @@ import {ContactType, ProfileType} from "../../../redux/state";
 import userIcon from "../../../assets/images/user.png";
 import {ProfileDataFormReduxForm} from "./ProfileDataForm";
 import {InjectedFormProps} from "redux-form";
+import Button from "antd/es/button";
 
 type ProfileInfoPropsType = {
     isOwner: boolean
@@ -33,11 +34,7 @@ export const ProfileInfo = (props: ProfileInfoPropsType) => {
 
     const onSubmit = (formData: ProfileType) => {
         props.saveProfile(formData)
-            // @ts-ignore
-            .then(() => {
-                setEditMode(false)
-            })
-
+        setEditMode(false)
     }
 
     return (
@@ -75,7 +72,7 @@ type ProfileDataPropsType = {
 const ProfileData = (props: ProfileDataPropsType) => {
     return <div>
         {props.isOwner && <div>
-            <button onClick={props.goToEditMode}>Edit</button>
+            <Button type={'default'} onClick={props.goToEditMode}>Edit</Button>
         </div>}
         <div>
             <b>Full name</b>: {props.profile.fullName}

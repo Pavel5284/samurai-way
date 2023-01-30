@@ -3,6 +3,7 @@ import s from "./Users.module.css";
 import userIcon from "../../assets/images/user.png";
 import {UsersDataType} from "../../redux/usersReducer";
 import {NavLink} from "react-router-dom";
+import Button from 'antd/es/button';
 
 type UserType = {
 
@@ -25,17 +26,13 @@ export const User = (props: UserType) => {
             </div>
     <div>
     {user.followed ?
-        <button disabled={props.followingInProgress.some(id => id === user.id)} onClick={() => {
+        <Button type={'default'} disabled={props.followingInProgress.some(id => id === user.id)} onClick={() => {
             props.unfollow(user.id)
+        }}>Unfollow</Button>
 
-
-        }}>Unfollow</button>
-        : <button disabled={props.followingInProgress.some(id => id === user.id)} onClick={() => {
-
+        : <Button type={'default'} disabled={props.followingInProgress.some(id => id === user.id)} onClick={() => {
         props.follow(user.id)
-
-
-        }}>Follow</button>}
+        }}>Follow</Button>}
     </div>
     </span>
                 <span>

@@ -4,12 +4,13 @@ import s from "./ProfileInfo.module.css";
 import {createField, Input, Textarea} from "../../common/FormsControls/FormsControls";
 import {InjectedFormProps, reduxForm} from "redux-form";
 import style from '../../common/FormsControls/FormsControls.module.css';
+import Button from "antd/es/button";
 
 const ProfileDataForm: React.FC<InjectedFormProps<ProfileType>> = (props) => {
     const {handleSubmit, initialValues, error} = props
     return <form onSubmit={handleSubmit}>
         <div>
-            <button>Save</button>
+            <Button type={'default'} onClick={handleSubmit}>Save</Button>
             {error && <div className={style.form_summary_error}>
                 {error}
             </div>}
