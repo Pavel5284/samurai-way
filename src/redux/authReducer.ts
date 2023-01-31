@@ -29,16 +29,18 @@ const initialState: AutInitialStateType = {
     captchaUrl: null
 }
 
+const SET_USER_DATA = 'auth/SET_USER_DATA'
+const GET_CAPTCHA_URL = 'auth/GET_CAPTCHA_URL'
 
 export const setAuthUserDataAC = (payload: AutInitialStateType | null) => {
     return {
-        type: 'auth/SET_USER_DATA',
+        type: SET_USER_DATA,
         payload
     } as const
 }
 export const getCaptchaUrlAC = (captchaUrl: string | null) => {
     return {
-        type: 'auth/GET_CAPTCHA_URL',
+        type: GET_CAPTCHA_URL,
         payload: {captchaUrl}
     }
 }
@@ -93,8 +95,8 @@ export const logout = () => async (dispatch: Dispatch) => {
 const autReducer = (state: AutInitialStateType = initialState, action: ActionsAuthType): AutInitialStateType => {
 
     switch (action.type) {
-        case 'auth/SET_USER_DATA':
-        case 'auth/GET_CAPTCHA_URL':
+        case SET_USER_DATA:
+        case GET_CAPTCHA_URL:
             return {
                 ...state,
                 ...action.payload,

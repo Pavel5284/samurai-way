@@ -7,6 +7,9 @@ import userIcon from "../../../assets/images/user.png";
 import {ProfileDataFormReduxForm} from "./ProfileDataForm";
 import {InjectedFormProps} from "redux-form";
 import Button from "antd/es/button";
+import Input from "antd/es/input";
+import { RetweetOutlined, UploadOutlined } from "@ant-design/icons/lib/icons";
+import Upload from "antd/es/upload";
 
 type ProfileInfoPropsType = {
     isOwner: boolean
@@ -44,10 +47,14 @@ export const ProfileInfo = (props: ProfileInfoPropsType) => {
                     <img className={s.mainPhoto}
                          src={props.profile.photos.large || userIcon}
                          alt="user Avatar"/>
-                    {props.isOwner && <input type={"file"} onChange={onMainPhotoSelected}/>}
+                    {props.isOwner &&
+                        <Input type="file" onChange={onMainPhotoSelected}/>
+                      /*  <Upload>
+                        <Button onChange={onMainPhotoSelected} icon={<UploadOutlined />}>Change Ava</Button>
+                        </Upload>*/
+                     }
                     {editMode ? <ProfileDataFormReduxForm
                         initialValues={props.profile}
-                        // profile={props.profile}
                         onSubmit={onSubmit}
                     /> : <ProfileData profile={props.profile}
                                       isOwner={props.isOwner}

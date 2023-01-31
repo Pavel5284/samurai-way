@@ -30,39 +30,46 @@ export type SetStatusActionType = ReturnType<typeof setStatusAC>
 export type SavePhotoActionType = ReturnType<typeof savePhotoAC>
 export type SaveProfileActionType = ReturnType<typeof saveProfileAC>
 
+const ADD_POST = 'profile/ADD_POST'
+const DELETE_POST = 'profile/DELETE_POST'
+const SET_USER_PROFILE = 'profile/SET_USER_PROFILE'
+const SET_STATUS = 'profile/SET_STATUS'
+const SAVE_PHOTO_SUCCESS = 'profile/SAVE_PHOTO_SUCCESS'
+const SAVE_PROFILE = 'profile/SAVE_PROFILE'
+
 export const addPostAC = (newPostText: string) => {
     return {
-        type: 'ADD-POST',
+        type: ADD_POST,
         newPostText: newPostText
     } as const
 }
 export const deletePostAC = (postId: number) => {
     return {
-        type: 'DELETE-POST',
+        type: DELETE_POST,
         postId
     } as const
 }
 export const setUserProfileAC = (profile: ProfileType) => {
     return {
-        type: "SET_USER_PROFILE",
+        type: SET_USER_PROFILE,
         profile
     } as const
 }
 export const setStatusAC = (status: string) => {
     return {
-        type: "SET_STATUS",
+        type: SET_STATUS,
         status
     } as const
 }
 export const savePhotoAC = (photos: UserPhotosType) => {
     return {
-        type: "SAVE_PHOTO_SUCCESS",
+        type: SAVE_PHOTO_SUCCESS,
         photos
     } as const
 }
 export const saveProfileAC = (profile: ProfileType) => {
     return {
-        type: "SAVE_PROFILE",
+        type: SAVE_PROFILE,
         profile
     } as const
 }
@@ -123,7 +130,7 @@ const initialState = {
 const profileReducer = (state: InitialStateType = initialState, action: ActionsProfileType): InitialStateType => {
 
     switch (action.type) {
-        case 'ADD-POST':
+        case ADD_POST:
             let newPost: PostDataType = {
                 id: new Date().getTime(),
                 message: action.newPostText,
@@ -133,26 +140,26 @@ const profileReducer = (state: InitialStateType = initialState, action: ActionsP
                 ...state,
                 posts: [...state.posts, newPost],
             };
-        case 'DELETE-POST':
+        case DELETE_POST:
             return {...state, posts: state.posts.filter(p => p.id != action.postId)};
 
-        case 'SET_USER_PROFILE':
+        case SET_USER_PROFILE:
             return {
                 ...state,
                 profile: action.profile
             };
-        case 'SET_STATUS':
+        case SET_STATUS:
             return {
                 ...state,
                 status: action.status
             }
-        case "SAVE_PHOTO_SUCCESS": {
+        case SAVE_PHOTO_SUCCESS: {
             return {
                 ...state,
                 profile: {...state.profile!, photos: action.photos}
             }
         }
-        case "SAVE_PROFILE": {
+        case SAVE_PROFILE: {
             return {
                 ...state,
                 profile: action.profile

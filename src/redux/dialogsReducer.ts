@@ -35,9 +35,11 @@ const initialState = {
 
 export type InitialStateType = typeof initialState
 
+const SEND_MESSAGE = 'dialogs/SEND_MESSAGE'
+
 const dialogReducer = (state: InitialStateType = initialState, action: ActionsProfileType): InitialStateType=> {
     switch (action.type) {
-        case 'SEND-MESSAGE':
+        case SEND_MESSAGE:
             let newMessage: PropsMessageType = {
                 id: new Date().getTime(),
                 message: action.newMessageBody
@@ -56,7 +58,7 @@ export type ActionsDialogsType = ReturnType<typeof SendMessageActionCreator>
 
 export const SendMessageActionCreator = (newMessageBody: string) => {
     return {
-        type: 'SEND-MESSAGE',
+        type: SEND_MESSAGE,
         newMessageBody
     } as const
 }

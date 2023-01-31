@@ -59,46 +59,54 @@ const initialState: InitialStateType = {
     portionSize: 10
 }
 
+const FOLLOW = 'users/FOLLOW'
+const UNFOLLOW = 'users/UNFOLLOW'
+const SET_USERS = 'users/SET_USERS'
+const SET_CURRENT_PAGE = 'users/SET_CURRENT_PAGE'
+const SET_TOTAL_USERS_COUNT = 'users/SET_TOTAL_USERS_COUNT'
+const TOGGLE_IS_FETCHING = 'users/TOGGLE_IS_FETCHING'
+const TOGGLE_IS_FOLLOWING_PROGRESS = 'users/TOGGLE_IS_FOLLOWING_PROGRESS'
+
 export const followSuccess = (userId: number) => {
     return {
-        type: 'FOLLOW',
+        type: FOLLOW,
         userId
     } as const
 }
 
 export const unfollowSuccess = (userId: number) => {
     return {
-        type: 'UNFOLLOW',
+        type: UNFOLLOW,
         userId
     } as const
 }
 export const setUsers = (users: UsersDataType[]) => {
     return {
-        type: 'SET_USERS',
+        type: SET_USERS,
         users
     } as const
 }
 export const setCurrentPage = (currentPage: number) => {
     return {
-        type: 'SET_CURRENT_PAGE',
+        type: SET_CURRENT_PAGE,
         currentPage
     } as const
 }
 export const setTotalUsersCount = (totalUsersCount: number) => {
     return {
-        type: 'SET_TOTAL_USERS_COUNT',
+        type: SET_TOTAL_USERS_COUNT,
         totalUsersCount
     } as const
 }
 export const toggleIsFetching = (isFetching: boolean) => {
     return {
-        type: 'TOGGLE_IS_FETCHING',
+        type: TOGGLE_IS_FETCHING,
         isFetching
     } as const
 }
 export const toggleIsFollowingProgress = (isFetching: boolean, userId: number) => {
     return {
-        type: 'TOGGLE_IS_FOLLOWING_PROGRESS',
+        type: TOGGLE_IS_FOLLOWING_PROGRESS,
         isFetching,
         userId
     } as const
@@ -107,31 +115,31 @@ export const toggleIsFollowingProgress = (isFetching: boolean, userId: number) =
 const usersReducer = (state: InitialStateType = initialState, action: ActionsUserType): InitialStateType => {
 
     switch (action.type) {
-        case 'FOLLOW':
+        case FOLLOW:
             return {
                 ...state,
                 users: updateObjectInArray(state.users, action.userId, 'id', {followed: true})
             }
 
-        case "UNFOLLOW":
+        case UNFOLLOW:
             return {
                 ...state,
                 users: updateObjectInArray(state.users, action.userId, 'id', {followed: false})
             }
-        case "SET_USERS": {
+        case SET_USERS: {
             return {...state, users: action.users}
         }
 
-        case "SET_CURRENT_PAGE": {
+        case SET_CURRENT_PAGE: {
             return {...state, currentPage: action.currentPage}
         }
-        case "SET_TOTAL_USERS_COUNT": {
+        case SET_TOTAL_USERS_COUNT: {
             return {...state, totalUsersCount: action.totalUsersCount}
         }
-        case "TOGGLE_IS_FETCHING": {
+        case TOGGLE_IS_FETCHING: {
             return {...state, isFetching: action.isFetching}
         }
-        case 'TOGGLE_IS_FOLLOWING_PROGRESS': {
+        case TOGGLE_IS_FOLLOWING_PROGRESS: {
             return {
                 ...state,
                 followingInProgress: action.isFetching
