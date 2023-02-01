@@ -59,9 +59,27 @@ export const profileAPI = {
 
 }
 
+export enum ResultCodesEnum {
+    Success = 0,
+    Error = 1,
+    CaptchIsRequired = 10
+}
+
+type MeResponseDataType = {
+    id: number
+    email: string
+    login: string
+}
+
+type MeResponseType = {
+    data: MeResponseDataType
+    resultCode: ResultCodesEnum
+    messages: any
+}
+
 export const authAPI = {
    me() {
-       return instance.get(`auth/me`)
+       return instance.get<MeResponseType>(`auth/me`)
    },
     login(email: string, password: string, rememberMe: boolean = false, captcha: string) {
        return instance.post(`auth/login`, { email, password, rememberMe, captcha})
