@@ -1,7 +1,6 @@
-import { AxiosResponse } from "axios";
-import { Action } from "redux";
-import { ThunkAction, ThunkDispatch } from "redux-thunk";
-import {ResponseType, usersAPI} from "../api/api";
+import {Action} from "redux";
+import {ThunkAction, ThunkDispatch} from "redux-thunk";
+import {ResponseType, ResultCodesEnum, usersAPI} from "../api/api";
 import {updateObjectInArray} from "../utils/object-helpers";
 import {ActionsTypes, AppStateRootType} from "./redux-store";
 
@@ -158,7 +157,7 @@ export const requestUsers = (page: number, pageSize: number): ThunkType => {
         dispatch(toggleIsFetching(true));
         dispatch(setCurrentPage(page));
         const data = await usersAPI.getUsers(page, pageSize)
-        dispatch(setCurrentPage(page))
+        dispatch(toggleIsFetching(false))
         dispatch(setUsers(data.items));
         dispatch(setTotalUsersCount(data.totalCount));
 
@@ -171,7 +170,7 @@ export const followUnfollowFlow = async (dispatch: ThunkDispatchType, userId: nu
     dispatch(toggleIsFollowingProgress(true, userId))
     const response = await apiMethod(userId)
 
-    if (response.resultCode === 0) {
+    if (response.resultCode === ResultCodesEnum.Success) {
         dispatch(actionCreater(userId))
     }
     dispatch(toggleIsFollowingProgress(false, userId))
@@ -179,12 +178,12 @@ export const followUnfollowFlow = async (dispatch: ThunkDispatchType, userId: nu
 
 export const follow = (userId: number): ThunkType => {
     return async (dispatch: ThunkDispatchType) => {
-        followUnfollowFlow(dispatch, userId, usersAPI.follow.bind(usersAPI), followSuccess)
+       await followUnfollowFlow(dispatch, userId, usersAPI.follow.bind(usersAPI), followSuccess)
     }
 }
 export const unfollow = (userId: number): ThunkType => {
     return async (dispatch: ThunkDispatchType) => {
-        followUnfollowFlow(dispatch, userId, usersAPI.unfollow.bind(usersAPI), unfollowSuccess)
+        await followUnfollowFlow(dispatch, userId, usersAPI.unfollow.bind(usersAPI), unfollowSuccess)
 
     }
 }

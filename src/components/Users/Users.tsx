@@ -11,7 +11,6 @@ type UsersType = {
     users: UsersDataType[]
     follow: (userId: number) => void
     unfollow: (userId: number) => void
-    //toggleIsFollowingProgress: (followingInProgress: boolean, userId: number) => void
     followingInProgress: Array<number>
     portionSize: number
 }
