@@ -13,8 +13,8 @@ export type UsersDataType = {
     location: LocationType
 }
 export type PhotosType = {
-    small: string
-    large: string
+    small: string | null
+    large: string | null
 }
 type LocationType = {
     city: string
@@ -38,7 +38,7 @@ export type ToggleIsFetchingActionType = ReturnType<typeof toggleIsFetching>
 export type ToggleIsFollowingProgressActionType = ReturnType<typeof toggleIsFollowingProgress>
 
 
-type InitialStateType = {
+export type InitialStateType = {
     users: UsersDataType[]
     pageSize: number
     totalUsersCount: number

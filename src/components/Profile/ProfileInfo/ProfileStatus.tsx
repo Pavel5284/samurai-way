@@ -1,4 +1,4 @@
-import Input from "antd/es/input";
+import { Input } from "antd";
 import React, {ChangeEvent} from "react";
 
 
@@ -35,8 +35,6 @@ class ProfileStatus extends React.Component<any, any> {
     }
 
     render() {
-
-        console.log(this.props.status);
         return (
 
             <div>
