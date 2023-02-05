@@ -25,6 +25,7 @@ let state: InitialStateType
             pageSize: 10,
             totalUsersCount: 0,
             currentPage: 1,
+            filter: {term: '', friend: null},
             isFetching: true,
             followingInProgress: [] as Array<number>,
             portionSize: 10

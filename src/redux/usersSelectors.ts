@@ -28,3 +28,6 @@ export const getFollowingInProgress = (state:AppStateRootType) => {
 export const getPortionSize = (state: AppStateRootType) => {
     return state.users.portionSize
 }
+export const getUsersFilter = (state: AppStateRootType) => {
+    return state.users.filter
+}
