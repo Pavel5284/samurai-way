@@ -13,11 +13,11 @@ type UserType = {
     followingInProgress: Array<number>
 }
 
-export const User = (props: UserType) => {
+export const User: React.FC<UserType> = (props) => {
     let user = props.users;
     return (
 
-         <div>
+        <div>
         <span>
             <div>
                 <NavLink to={'/profile/' + user.id}>
@@ -31,19 +31,19 @@ export const User = (props: UserType) => {
         }}>Unfollow</Button>
 
         : <Button type={'default'} disabled={props.followingInProgress.some(id => id === user.id)} onClick={() => {
-        props.follow(user.id)
+            props.follow(user.id)
         }}>Follow</Button>}
     </div>
     </span>
-                <span>
+            <span>
     <div>{user.name}</div>
     <div>{user.status}</div>
     </span>
-                <span>
+            <span>
     <div>{"u.location.country"}</div>
     <div>{"u.location.city"}</div>
     </span>
-            </div>
+        </div>
 
     )
 }

@@ -17,7 +17,7 @@ type FormikErrorType = {
     captchaUrl?: string
 }
 
-export const LoginForm = () => {
+export const LoginPage = () => {
     const dispatch = useAppDispatch()
     const isAuth = useAppSelector(state => state.auth.isAuth)
     const captchaUrl = useAppSelector(state => state.auth.captchaUrl)
