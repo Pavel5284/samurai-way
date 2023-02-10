@@ -1,56 +1,51 @@
-import { Input } from "antd";
-import React, {ChangeEvent} from "react";
+import Input from 'antd/es/input';
+import React, {ChangeEvent, useEffect, useState} from 'react';
+import {useAppDispatch, useAppSelector} from "../../../redux/redux-store";
+import {updateStatus} from "../../../redux/profileReducer";
 
-
-class ProfileStatus extends React.Component<any, any> {
-    state = {
-        editMode: false,
-        status: this.props.status
-    }
-    activateEditMode = () => {
-        this.setState( {
-            editMode: true
-        })
-    }
-    deactivateEditMode = () => {
-        this.setState( {
-            editMode: false
-        });
-        this.props.updateStatus(this.state.status);
-    }
-    onStatusChange = (e: ChangeEvent<HTMLInputElement>) => {
-        this.setState({
-            status: e.currentTarget.value
-        });
-
-    }
-
-    componentDidUpdate(prevProps: Readonly<any>, prevState: Readonly<any>) {
-        debugger
-        if (prevProps.status !== this.props.status) {
-            this.setState({
-                status: this.props.status
-            });
-        }
-    }
-
-    render() {
-        return (
-
-            <div>
-                {!this.state.editMode &&
-                <div>
-                    <span onDoubleClick={this.activateEditMode}>{this.props.status || '-----'}</span>
-                </div>
-                }
-                {this.state.editMode &&
-                <div>
-                    <Input onChange={this.onStatusChange} autoFocus={true} onBlur={this.deactivateEditMode} value={this.state.status}/>
-                </div>
-                }
-            </div>
-        )
-    }
+type PropsType = {
+    status?: string
+    updateStatus?: () => void
 }
 
-export default ProfileStatus;
+export const ProfileStatus:React.FC<PropsType> = (props) => {
+
+    const dispatch = useAppDispatch()
+    const statusFromState = useAppSelector<string>( state => state.profile.status)
+
+    const [editMode, setEditMode] = useState<boolean>(false);
+    const [status, setStatus] = useState<string>(statusFromState);
+
+    useEffect(() => {
+        setStatus(statusFromState);
+    },[statusFromState])
+
+    const activateEditMode = () => {
+        setEditMode(true)
+    }
+    const deactivateEditMode = () => {
+        setEditMode(false);
+        dispatch(updateStatus(status));
+    }
+
+    const onStatusChange = (e:ChangeEvent<HTMLInputElement>) => {
+        setStatus(e.currentTarget.value)
+    }
+
+    return (
+        <div>
+            {!editMode &&
+            <div>
+                <b>Status: </b> <span onDoubleClick={activateEditMode}>{statusFromState || '-----'}</span>
+            </div>
+            }
+
+            {editMode &&
+            <div>
+                <Input onChange={onStatusChange} autoFocus={true} onBlur={deactivateEditMode}
+                value={status}/>
+            </div>
+            }
+        </div>
+    );
+};

@@ -9,7 +9,7 @@ export type MessagesPageType = {
 export type PropsDialogType = {
     id: number
     name: string
-    avatar: string
+    avatar?: string
 }
 export type PropsMessageType={
     id?: number
@@ -54,9 +54,9 @@ const dialogReducer = (state: InitialStateType = initialState, action: ActionsPr
 }
 
 
-export type ActionsDialogsType = ReturnType<typeof SendMessageActionCreator>
+export type ActionsDialogsType = ReturnType<typeof SendMessageAC>
 
-export const SendMessageActionCreator = (newMessageBody: string) => {
+export const SendMessageAC = (newMessageBody: string) => {
     return {
         type: SEND_MESSAGE,
         newMessageBody

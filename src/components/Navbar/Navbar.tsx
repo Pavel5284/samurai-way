@@ -7,22 +7,22 @@ export const Navbar = () => {
     <nav className={s.nav}>
         <ul className={s.items}>
             <li className={s.item}>
-                <NavLink to="/profile" activeClassName={s.active}>Profile</NavLink>
+                <NavLink to="/profile" className={({isActive}) => isActive ? s.active : undefined}>Profile</NavLink>
             </li>
             <li className={s.item}>
-                <NavLink to="/dialogs" activeClassName={s.active}>Messages</NavLink>
+                <NavLink to="/dialogs" className={({isActive}) => isActive ? s.active : undefined}>Messages</NavLink>
             </li>
             <li className={s.item}>
-                <NavLink to="/users" activeClassName={s.active}>Users</NavLink>
+                <NavLink to="/users" className={({isActive}) => isActive ? s.active : undefined}>Users</NavLink>
             </li>
             <li className={s.item}>
-                <NavLink to="/news" activeClassName={s.active}>News</NavLink>
+                <NavLink to="/news" className={({isActive}) => isActive ? s.active : undefined}>News</NavLink>
             </li>
             <li className={s.item}>
-                <NavLink to="/music" activeClassName={s.active}>Music</NavLink>
+                <NavLink to="/music" className={({isActive}) => isActive ? s.active : undefined}>Music</NavLink>
             </li>
             <li className={s.item}>
-                <NavLink to="settings" activeClassName={s.active}>Settings</NavLink>
+                <NavLink to="settings" className={({isActive}) => isActive ? s.active : undefined}>Settings</NavLink>
             </li>
 
         </ul>

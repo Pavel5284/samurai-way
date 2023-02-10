@@ -1,23 +1,42 @@
-import React, {useState} from 'react';
+import React from 'react';
 import s from "./Paginator.module.css";
-import cn from 'classnames'
-import {LeftOutlined, RightOutlined} from '@ant-design/icons';
+import { Pagination } from 'antd';
 
 type PaginatorPropsType = {
     totalUsersCount: number
     pageSize: number
     portionSize?: number
     currentPage: number
-    onPageChanged: (pageNumber: number) => void
+    currentPageSize: number
+    onPageChanged: (pageNumber: number, pageSize: number) => void
 }
 
 export const Paginator: React.FC<PaginatorPropsType> = ({
                                                             totalUsersCount, pageSize,
-                                                            currentPage = 1,
-                                                            onPageChanged = x => x,
-                                                            portionSize = 10
+                                                            currentPageSize,
+                                                            currentPage,
+                                                            onPageChanged,
+                                                            portionSize
                                                         }) => {
-    let pageCount = Math.ceil(totalUsersCount / pageSize);
+    const changePageHandler = (pageNumber: number, pageSize: number) => {
+        if ((pageSize === currentPageSize) && (pageNumber === currentPage)) return;
+        onPageChanged(pageNumber, pageSize)
+    }
+    return (
+        <div className={s.paginator}>
+
+
+            <Pagination current={currentPage}
+                        defaultPageSize={currentPageSize}
+                        defaultCurrent={1}
+                        total={totalUsersCount}
+                        pageSizeOptions={['5', '10', '20']}
+                        onChange={changePageHandler}/>
+
+        </div>
+    );
+
+    /*let pageCount = Math.ceil(totalUsersCount / pageSize);
     let pages: number[] = [];
     for (let i = 1; i <= pageCount; i++) {
         pages.push(i);
@@ -47,5 +66,5 @@ export const Paginator: React.FC<PaginatorPropsType> = ({
             <RightOutlined onClick={() => {
                 setPortionNumber(portionNumber + 1)
             }}>NEXT</RightOutlined>}
-    </div>
+    </div>*/
 }

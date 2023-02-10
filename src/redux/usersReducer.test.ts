@@ -1,4 +1,4 @@
-import usersReducer, {followSuccess, InitialStateType, unfollowSuccess} from "./usersReducer";
+import usersReducer, {followSuccessAC, InitialStateType, unfollowSuccessAC} from "./usersReducer";
 
 let state: InitialStateType
 
@@ -37,14 +37,14 @@ let state: InitialStateType
 
 test('follow success', () => {
 
-    const newState = usersReducer(state, followSuccess(1))
+    const newState = usersReducer(state, followSuccessAC(1))
 
     expect(newState.users[0].followed).toBeFalsy()
     expect(newState.users[1].followed).toBeTruthy()
 })
 test('unFollow success', () => {
 
-    const newState = usersReducer(state, unfollowSuccess(2))
+    const newState = usersReducer(state, unfollowSuccessAC(2))
 
     expect(newState.users[0].followed).toBeFalsy()
     expect(newState.users[2].followed).toBeFalsy()

@@ -1,20 +1,45 @@
-import {maxLengthCreator, required} from "../../../utils/validators/validators";
 import React from "react";
-import {Field, InjectedFormProps, reduxForm} from "redux-form";
 import {Textarea} from "../../common/FormsControls/FormsControls";
 import Button from "antd/es/button";
+import {useAppDispatch} from "../../../redux/redux-store";
+import {Field, useFormik} from "formik";
+import {SendMessageAC} from "../../../redux/dialogsReducer";
 
-type FormDataType = {
-    newMessageBody: string
+type FormikType = {
+    Text?: string
 }
-const maxLength50 = maxLengthCreator(50);
-const AddMessageForm: React.FC<InjectedFormProps<FormDataType>> = (props) => {
+
+export const AddMessageForm = () => {
+    const dispatch = useAppDispatch()
+    const formik = useFormik({
+        initialValues: {
+            Text: '',
+        },
+        onSubmit: values => {
+            dispatch(SendMessageAC(values.Text))
+            formik.resetForm()
+        },
+        validate: (values:FormikType) => {
+            const errors: FormikType = {}
+
+            if (!values.Text) {
+                errors.Text = 'Required'
+            }
+            return errors
+        }
+    })
     return (
-        <form onSubmit={props.handleSubmit}>
+        <form onSubmit={formik.handleSubmit}>
             <div>
-                <Field component={Textarea}
-                       validate={[required, maxLength50]}
-                       name="newMessageBody" placeholder="Enter your message"/>
+                <textarea
+                       name="Text"
+                       placeholder="Enter your message"
+                       onChange={formik.handleChange}
+                       value={formik.values.Text}
+                />
+                {formik.touched.Text && formik.errors.Text &&
+                <div style={{color:'red'}}>{formik.errors.Text}</div>
+                }
             </div>
             <div>
                 <Button type={'default'} htmlType={'submit'}>
@@ -24,5 +49,3 @@ const AddMessageForm: React.FC<InjectedFormProps<FormDataType>> = (props) => {
         </form>
     )
 }
-
-export const AddMessageFormRedux = reduxForm<FormDataType>({form: "dialogAddMessageForm"}) (AddMessageForm);

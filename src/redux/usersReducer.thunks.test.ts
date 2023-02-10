@@ -1,4 +1,4 @@
-import {follow, followSuccess, toggleIsFollowingProgress, unfollow, unfollowSuccess} from "./usersReducer";
+import {follow, followSuccessAC, toggleIsFollowingProgressAC, unfollow, unfollowSuccessAC} from "./usersReducer";
 import {ResponseType, ResultCodesEnum, usersAPI} from "../api/api";
 jest.mock("../api/api")
 
@@ -33,9 +33,9 @@ test('success folow thunk', async () => {
     await thunk(dispatchMock, getStateMock, {})
 
     expect(dispatchMock).toBeCalledTimes(3)
-    expect(dispatchMock).toHaveBeenNthCalledWith(1, toggleIsFollowingProgress(true, 1))
-    expect(dispatchMock).toHaveBeenNthCalledWith(2, followSuccess( 1))
-    expect(dispatchMock).toHaveBeenNthCalledWith(3, toggleIsFollowingProgress(false, 1))
+    expect(dispatchMock).toHaveBeenNthCalledWith(1, toggleIsFollowingProgressAC(true, 1))
+    expect(dispatchMock).toHaveBeenNthCalledWith(2, followSuccessAC( 1))
+    expect(dispatchMock).toHaveBeenNthCalledWith(3, toggleIsFollowingProgressAC(false, 1))
 })
 
 test('success unFolow thunk', async () => {
@@ -46,7 +46,7 @@ test('success unFolow thunk', async () => {
     await thunk(dispatchMock, getStateMock, {})
 
     expect(dispatchMock).toBeCalledTimes(3)
-    expect(dispatchMock).toHaveBeenNthCalledWith(1, toggleIsFollowingProgress(true, 1))
-    expect(dispatchMock).toHaveBeenNthCalledWith(2, unfollowSuccess( 1))
-    expect(dispatchMock).toHaveBeenNthCalledWith(3, toggleIsFollowingProgress(false, 1))
+    expect(dispatchMock).toHaveBeenNthCalledWith(1, toggleIsFollowingProgressAC(true, 1))
+    expect(dispatchMock).toHaveBeenNthCalledWith(2, unfollowSuccessAC( 1))
+    expect(dispatchMock).toHaveBeenNthCalledWith(3, toggleIsFollowingProgressAC(false, 1))
 })

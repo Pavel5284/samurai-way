@@ -1,28 +1,24 @@
-import React, {useState} from "react";
+import React, {useRef, useState} from "react";
 import s from "./ProfileInfo.module.css";
 import {Preloader} from "../../common/Preloader/Preloader";
-import ProfileStatusWithHooks from "./ProfileStatusWithHooks";
 import {ContactType, ProfileType} from "../../../redux/state";
 import userIcon from "../../../assets/images/user.png";
 import {ProfileDataFormReduxForm} from "./ProfileDataForm";
-import {InjectedFormProps} from "redux-form";
 import Button from "antd/es/button";
 import Input from "antd/es/input";
-import { RetweetOutlined, UploadOutlined } from "@ant-design/icons/lib/icons";
-import Upload from "antd/es/upload";
+import {useAppDispatch, useAppSelector} from "../../../redux/redux-store";
+import {savePhoto, saveProfile} from "../../../redux/profileReducer";
+import {ProfileStatus} from "./ProfileStatus";
 
 type ProfileInfoPropsType = {
     isOwner: boolean
     profile: ProfileType | null
-    status: string
-    updateStatus: (status: string) => void
-    savePhoto: (photo: string) => void
-    saveProfile: (profile: ProfileType) => void
 }
 
 
-export const ProfileInfo = (props: ProfileInfoPropsType) => {
-
+export const ProfileInfo: React.FC<ProfileInfoPropsType> = (props) => {
+    const dispatch = useAppDispatch()
+    const inputRef = useRef<HTMLInputElement>(null)
     const [editMode, setEditMode] = useState(false)
 
     if (!props.profile) {
@@ -31,12 +27,15 @@ export const ProfileInfo = (props: ProfileInfoPropsType) => {
 
     const onMainPhotoSelected = (e: { target: any }) => {
         if (e.target.files.length) {
-            props.savePhoto(e.target.files[0])
+            dispatch(savePhoto(e.target.files[0]))
         }
+    }
+    const selectFileHandler = () => {
+        inputRef && inputRef.current?.click();
     }
 
     const onSubmit = (formData: ProfileType) => {
-        props.saveProfile(formData)
+        dispatch(saveProfile(formData))
         setEditMode(false)
     }
 
@@ -47,12 +46,18 @@ export const ProfileInfo = (props: ProfileInfoPropsType) => {
                     <img className={s.mainPhoto}
                          src={props.profile.photos.large || userIcon}
                          alt="user Avatar"/>
-                    {props.isOwner &&
-                        <Input type="file" onChange={onMainPhotoSelected}/>
-                      /*  <Upload>
-                        <Button onChange={onMainPhotoSelected} icon={<UploadOutlined />}>Change Ava</Button>
-                        </Upload>*/
-                     }
+                    {props.isOwner && (
+                        <>
+                            <Button onClick={selectFileHandler}>Change Photo</Button>
+                            <input
+                                style={{display: 'none'}}
+                                type="file"
+                                ref={inputRef}
+                                onChange={onMainPhotoSelected}/>
+                        </>
+                    )
+                    }
+                    <ProfileStatus/>
                     {editMode ? <ProfileDataFormReduxForm
                         initialValues={props.profile}
                         onSubmit={onSubmit}
@@ -66,7 +71,7 @@ export const ProfileInfo = (props: ProfileInfoPropsType) => {
                     }
 
                 </div>
-                <ProfileStatusWithHooks status={props.status} updateStatus={props.updateStatus}/>
+
             </div>
         </div>
     )

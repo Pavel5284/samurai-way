@@ -8,6 +8,7 @@ import {PropsDialogType} from "../../../redux/dialogsReducer";
 
 
 export const DialogItem = (props: PropsDialogType) => {
+
     let path = "/dialogs/" + props.id;
 
     return <div className={s.dialog + ' ' + s.active}>

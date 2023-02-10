@@ -38,7 +38,7 @@ export const useAppSelector: TypedUseSelectorHook<AppStateRootType> = useSelecto
 //export const store = createStore(rootReducer, applyMiddleware(thunkMiddleware))
 export type StoreAppType = typeof store
 //@ts-ignore
-window.__store__ = store
+window.store = store
 
 export type AllActionsType = SetUserDataActionType | InitializedSuccessActionType
 
