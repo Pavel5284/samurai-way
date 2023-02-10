@@ -52,11 +52,6 @@ export const Users: React.FC<UsersType> = (props) => {
         dispatch(requestUsers(pageNumber, pageSize, filter))
     }
 
-    const onFilterChanged = (filter: FilterType) => {
-        setSearchParams({term: filter.term, friend: `${filter.friend}`})
-
-        dispatch(requestUsers(1, currentPageSize, filter))
-    }
 
     const followHandler = (userId: number) => {
         dispatch(follow(userId))

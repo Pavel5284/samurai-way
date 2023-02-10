@@ -53,7 +53,7 @@ const initialState = {
     },
     isFetching: true,
     followingInProgress: [] as Array<number>,
-    portionSize: 10
+    portionSize: 5
 }
 
 const FOLLOW = 'users/FOLLOW'

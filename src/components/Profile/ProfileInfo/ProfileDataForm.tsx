@@ -14,6 +14,7 @@ const ProfileDataForm: React.FC<InjectedFormProps<ProfileType>> = (props) => {
             {error && <div className={style.form_summary_error}>
                 {error}
             </div>}
+
         </div>
         <div>
             <b>Full name</b>:

@@ -9,7 +9,8 @@ let state = {
         {id: 3, message: 'This is second post', likesCount: 10}
     ],
     profile: null as ProfileType | null,
-    status: ""
+    status: "",
+    formError: ''
 }
 
 test('length of posts should be incremented', () => {

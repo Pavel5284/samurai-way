@@ -20,6 +20,7 @@ export const ProfileInfo: React.FC<ProfileInfoPropsType> = (props) => {
     const dispatch = useAppDispatch()
     const inputRef = useRef<HTMLInputElement>(null)
     const [editMode, setEditMode] = useState(false)
+    const error = useAppSelector(state => state.profile.formError)
 
     if (!props.profile) {
         return <Preloader/>
@@ -36,7 +37,9 @@ export const ProfileInfo: React.FC<ProfileInfoPropsType> = (props) => {
 
     const onSubmit = (formData: ProfileType) => {
         dispatch(saveProfile(formData))
-        setEditMode(false)
+        if (error) {
+            setEditMode(false)
+        }
     }
 
     return (

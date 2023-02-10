@@ -19,6 +19,7 @@ export type ActionsProfileType =
     | ActionsDialogsType
     | SetUserProfileActionType
     | SetStatusActionType
+    | SetErrorActionType
     | SavePhotoActionType
     | SaveProfileActionType
 
@@ -27,6 +28,7 @@ export type AddPostActionType = ReturnType<typeof addPostAC>
 export type DeletePostActionType = ReturnType<typeof deletePostAC>
 export type SetUserProfileActionType = ReturnType<typeof setUserProfileAC>
 export type SetStatusActionType = ReturnType<typeof setStatusAC>
+export type SetErrorActionType = ReturnType<typeof setErrorAC>
 export type SavePhotoActionType = ReturnType<typeof savePhotoAC>
 export type SaveProfileActionType = ReturnType<typeof saveProfileAC>
 
@@ -34,6 +36,7 @@ const ADD_POST = 'profile/ADD_POST'
 const DELETE_POST = 'profile/DELETE_POST'
 const SET_USER_PROFILE = 'profile/SET_USER_PROFILE'
 const SET_STATUS = 'profile/SET_STATUS'
+const SET_ERROR = 'profile/SET_ERROR'
 const SAVE_PHOTO_SUCCESS = 'profile/SAVE_PHOTO_SUCCESS'
 const SAVE_PROFILE = 'profile/SAVE_PROFILE'
 
@@ -59,6 +62,12 @@ export const setStatusAC = (status: string) => {
     return {
         type: SET_STATUS,
         status
+    } as const
+}
+export const setErrorAC = (error: string) => {
+    return {
+        type: SET_ERROR,
+        error
     } as const
 }
 export const savePhotoAC = (photos: UserPhotosType) => {
@@ -104,9 +113,12 @@ export const saveProfile = (profile: ProfileType): ThunkType => async (dispatch:
     let response = await profileAPI.saveProfile(profile)
 
     if (response.data.resultCode === 0) {
-        dispatch(getUserProfile(userId))
+        if (userId != null) {
+            dispatch(getUserProfile(userId))
+        }
     } else {
         dispatch(stopSubmit('edit-profile', {_error: response.data.messages[0]}))
+        dispatch(setErrorAC(response.data.messages[0]))
         return Promise.reject(response.data.messages[0])
     }
 }
@@ -122,8 +134,8 @@ const initialState = {
         {id: 3, message: 'This is second post', likesCount: 10}
     ],
     profile: null as null| ProfileType,
-    status: ""
-
+    status: "",
+    formError: ''
 }
 
 
@@ -152,6 +164,11 @@ const profileReducer = (state: InitialStateType = initialState, action: ActionsP
             return {
                 ...state,
                 status: action.status
+            }
+            case SET_ERROR:
+            return {
+                ...state,
+                formError: action.error
             }
         case SAVE_PHOTO_SUCCESS: {
             return {
