@@ -2,3 +2,13 @@
     width: 100px;
     height: 100px;
 }
+.search__container{
+    display: flex;
+    gap: 5px;
+    padding-bottom: 20px;
+}
+.users__items{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}

@@ -2,7 +2,17 @@
     max-width: 100%;
 }
 .description__block{
-    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.profile__block{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.profile__button{
+    max-width: 150px;
 }
 .mainPhoto{
     max-width: 200px;

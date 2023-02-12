@@ -9,6 +9,7 @@ import Input from "antd/es/input";
 import {useAppDispatch, useAppSelector} from "../../../redux/redux-store";
 import {savePhoto, saveProfile} from "../../../redux/profileReducer";
 import {ProfileStatus} from "./ProfileStatus";
+import {Avatar} from "antd";
 
 type ProfileInfoPropsType = {
     isOwner: boolean
@@ -20,6 +21,7 @@ export const ProfileInfo: React.FC<ProfileInfoPropsType> = (props) => {
     const dispatch = useAppDispatch()
     const inputRef = useRef<HTMLInputElement>(null)
     const [editMode, setEditMode] = useState(false)
+    const userLargeAvatar = useAppSelector(state => state.profile.profile?.photos.large)
     const error = useAppSelector(state => state.profile.formError)
 
     if (!props.profile) {
@@ -43,39 +45,33 @@ export const ProfileInfo: React.FC<ProfileInfoPropsType> = (props) => {
     }
 
     return (
-        <div>
-            <div className={s.description__block}>
-                <div>
-                    <img className={s.mainPhoto}
-                         src={props.profile.photos.large || userIcon}
-                         alt="user Avatar"/>
-                    {props.isOwner && (
-                        <>
-                            <Button onClick={selectFileHandler}>Change Photo</Button>
-                            <input
-                                style={{display: 'none'}}
-                                type="file"
-                                ref={inputRef}
-                                onChange={onMainPhotoSelected}/>
-                        </>
-                    )
-                    }
-                    <ProfileStatus/>
-                    {editMode ? <ProfileDataFormReduxForm
-                        initialValues={props.profile}
-                        onSubmit={onSubmit}
-                    /> : <ProfileData profile={props.profile}
-                                      isOwner={props.isOwner}
-                                      goToEditMode={() => {
-                                          setEditMode(true)
-                                      }}
+        <div className={s.profile__block}>
+            <Avatar src={userLargeAvatar || userIcon} alt="user Avatar"
+                    size={150}/>
+            {props.isOwner && (
+                <>
+                    <Button  className={s.profile__button} onClick={selectFileHandler}>Change Photo</Button>
+                    <input
+                        style={{display: 'none'}}
+                        type="file"
+                        ref={inputRef}
+                        onChange={onMainPhotoSelected}/>
+                </>
+            )
+            }
+            <ProfileStatus/>
+            {editMode ? <ProfileDataFormReduxForm
+                initialValues={props.profile}
+                onSubmit={onSubmit}
+            /> : <ProfileData profile={props.profile}
+                              isOwner={props.isOwner}
+                              goToEditMode={() => {
+                                  setEditMode(true)
+                              }}
 
-                    />
-                    }
+            />
+            }
 
-                </div>
-
-            </div>
         </div>
     )
 }
@@ -85,7 +81,7 @@ type ProfileDataPropsType = {
     goToEditMode: () => void
 }
 const ProfileData = (props: ProfileDataPropsType) => {
-    return <div>
+    return <div className={s.description__block}>
         {props.isOwner && <div>
             <Button type={'default'} onClick={props.goToEditMode}>Edit</Button>
         </div>}

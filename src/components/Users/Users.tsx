@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {FilterType, requestUsers, follow, unfollow} from "../../redux/usersReducer";
+import {follow, requestUsers, unfollow} from "../../redux/usersReducer";
 import {Paginator} from "../common/Paginator/Paginator";
 import {User} from "./User";
 import {FriendFormType, UsersSearch} from "./UsersSearch";
@@ -9,11 +9,10 @@ import {
     getFollowingInProgress,
     getPageSize,
     getTotalUsersCount,
-    getUsers,
-    getUsersFilter
+    getUsers
 } from "../../redux/usersSelectors";
-import * as queryString from "querystring";
-import {Navigate, useNavigate, useSearchParams} from 'react-router-dom';
+import {Navigate, useSearchParams} from 'react-router-dom';
+import s from './Users.module.css'
 
 type UsersType = {}
 
@@ -71,13 +70,8 @@ export const Users: React.FC<UsersType> = (props) => {
                      friendQuery={friendQuery}
                      termQuery={termQuery}
         />
-        <Paginator totalUsersCount={totalUsersCount}
-                   pageSize={currentPageSize} currentPage={currentPage}
-                   onPageChanged={onPageChanged}
-                   currentPageSize={currentPageSize}
 
-        />
-        <div>
+        <div className={s.users__items}>
             {
                 users.map(u => <User key={u.id}
                                      users={u}
@@ -86,6 +80,12 @@ export const Users: React.FC<UsersType> = (props) => {
                                      followingInProgress={followingInProgress}/>)
             }
         </div>
+        <Paginator totalUsersCount={totalUsersCount}
+                   pageSize={currentPageSize} currentPage={currentPage}
+                   onPageChanged={onPageChanged}
+                   currentPageSize={currentPageSize}
+
+        />
     </div>
 }
 

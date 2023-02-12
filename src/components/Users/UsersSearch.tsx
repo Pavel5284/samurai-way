@@ -4,6 +4,7 @@ import {FilterType, requestUsers} from "../../redux/usersReducer";
 import {useAppDispatch, useAppSelector} from "../../redux/redux-store";
 import {getPageSize, getUsersFilter} from "../../redux/usersSelectors";
 import {Button, Input, Select} from "antd";
+import s from './Users.module.css'
 
 
 export type FriendFormType = 'all' | 'friends'
@@ -34,7 +35,7 @@ export const UsersSearch: React.FC<PropsType> = React.memo((props) => {
         e.key === "Enter" && buttonHandler(e.target.value)
     }*/
 
-    return <div>
+    return <div className={s.search__container}>
 
         <Input
             /*onKeyUp={pressEnter}*/
