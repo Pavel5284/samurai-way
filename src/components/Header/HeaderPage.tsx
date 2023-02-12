@@ -12,7 +12,6 @@ export const HeaderPage = () => {
     const dispatch= useAppDispatch()
     const isAuth = useAppSelector(state => state.auth.isAuth)
     const login = useAppSelector(state => state.auth.login)
-    const userAvatar = useAppSelector(state => state.profile.profile?.photos.small)
     const logoutHandler = () => {
         dispatch(logout())
     }
@@ -26,9 +25,6 @@ export const HeaderPage = () => {
                 <div className={s.loginBlock}>
                     {isAuth
                         ? <div className={s.header__login}>
-                            <Avatar style={{  verticalAlign: 'middle' }}
-                                    src={userAvatar}
-                                    size="large"/>
                             {login} - <Button type={'default'} onClick={logoutHandler}>Log out</Button></div>
                         :  <NavLink to={'/login'}>Login</NavLink>}
                 </div>

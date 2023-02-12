@@ -4,14 +4,21 @@ import {NavLink, Route, Routes} from "react-router-dom"
 import {initializeApp} from "./redux/appReducer";
 import {useAppDispatch, useAppSelector} from "./redux/redux-store";
 import {UsersPage} from './components/Users/UsersPage';
-import {ProfileContainer} from './components/Profile/ProfileContainer';
-import {DialogsContainer} from './components/Dialogs/DialogsContainer';
 import {HeaderPage} from './components/Header/HeaderPage';
 import {Breadcrumb, Layout, Menu, MenuProps, Spin, theme} from 'antd';
 import {LoginPage} from './components/Login/LoginPage';
 import {DesktopOutlined, PieChartOutlined, UserOutlined, WechatOutlined} from '@ant-design/icons';
-import { Header } from 'antd/es/layout/layout';
+import { withSuspense } from './hoc/withSuspense';
 
+
+
+const ChatPage = React.lazy(() => import("./pages/Chat/ChatPage"));
+const ProfileContainer = React.lazy(() => import('./components/Profile/ProfileContainer'));
+const DialogsContainer = React.lazy(() => import('./components/Dialogs/DialogsContainer'));
+
+const SuspendedDialogs = withSuspense(DialogsContainer)
+const SuspendedProfile = withSuspense(ProfileContainer)
+const SuspendedChat = withSuspense(ChatPage)
 
 const {Content, Footer, Sider} = Layout;
 
@@ -76,10 +83,12 @@ export const App: React.FC = () => {
                     </Breadcrumb>
                     <div style={{padding: 24, minHeight: 360, background: colorBgContainer}}>
                         <Routes>
-                            <Route path="/profile/:userId?" element={<ProfileContainer/>}/>
-                            <Route path="/dialogs" element={<DialogsContainer/>}/>
+                            <Route path='/' element={<ProfileContainer/>}/>
+                            <Route path="/profile/:userId?" element={<SuspendedProfile/>}/>
+                            <Route path="/dialogs" element={<SuspendedDialogs/>}/>
                             <Route path="/users" element={<UsersPage pageTitle={'Samurais'}/>}/>
                             <Route path="/login" element={<LoginPage/>}/>
+                            <Route path="/chat" element={<SuspendedChat/>}/>
                             <Route path='*' element={() => <div>404 NOT FOUND</div>}/>
                         </Routes>
                     </div>

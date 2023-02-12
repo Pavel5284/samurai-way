@@ -5,7 +5,7 @@ import {useAppDispatch, useAppSelector} from "../../redux/redux-store";
 import {Navigate, useParams} from "react-router-dom";
 
 
-export const ProfileContainer = () => {
+const ProfileContainer = () => {
 
     let {userId} = useParams()
     const dispatch = useAppDispatch()
@@ -32,3 +32,5 @@ export const ProfileContainer = () => {
         />
     )
 }
+
+export default ProfileContainer

@@ -3,7 +3,7 @@ import {useAppSelector} from "../../redux/redux-store";
 import {Dialogs} from "./Dialogs";
 import {Navigate} from "react-router-dom";
 
-export const DialogsContainer = () => {
+const DialogsContainer = () => {
     const isAuth = useAppSelector(state => state.auth.isAuth)
 
     if (!isAuth) {
@@ -15,3 +15,5 @@ export const DialogsContainer = () => {
             </>
         )
 }
+
+export default DialogsContainer
