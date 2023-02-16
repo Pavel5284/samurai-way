@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {Suspense, useEffect, useState} from 'react';
 import './App.css';
 import {NavLink, Route, Routes} from "react-router-dom"
 import {initializeApp} from "./redux/appReducer";
@@ -9,6 +9,8 @@ import {Breadcrumb, Layout, Menu, MenuProps, Spin, theme} from 'antd';
 import {LoginPage} from './components/Login/LoginPage';
 import {DesktopOutlined, PieChartOutlined, UserOutlined, WechatOutlined} from '@ant-design/icons';
 import { withSuspense } from './hoc/withSuspense';
+import {Preloader} from "../src/components/common/Preloader/Preloader";
+
 
 
 
@@ -84,6 +86,7 @@ export const App: React.FC = () => {
                     <Breadcrumb style={{margin: '16px 0'}}>
                     </Breadcrumb>
                     <div style={{padding: 24, minHeight: 360, background: colorBgContainer}}>
+                        <Suspense fallback={<Preloader/>}>
                         <Routes>
                             <Route path='/' element={<ProfileContainer/>}/>
                             <Route path="/profile/:userId?" element={<SuspendedProfile/>}/>
@@ -95,6 +98,7 @@ export const App: React.FC = () => {
 
                             <Route path='*' element={() => <div>404 NOT FOUND</div>}/>
                         </Routes>
+                        </Suspense>
                     </div>
                 </Content>
 
