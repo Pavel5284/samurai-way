@@ -12,13 +12,15 @@ import { withSuspense } from './hoc/withSuspense';
 
 
 
-const ChatPage = React.lazy(() => import("./pages/Chat/ChatPage"));
+
 const ProfileContainer = React.lazy(() => import('./components/Profile/ProfileContainer'));
 const DialogsContainer = React.lazy(() => import('./components/Dialogs/DialogsContainer'));
+const ChatPage = React.lazy(() => import('./pages/Chat/ChatPage'));
 
-const SuspendedDialogs = withSuspense(DialogsContainer)
 const SuspendedProfile = withSuspense(ProfileContainer)
+const SuspendedDialogs = withSuspense(DialogsContainer)
 const SuspendedChat = withSuspense(ChatPage)
+
 
 const {Content, Footer, Sider} = Layout;
 
@@ -86,9 +88,11 @@ export const App: React.FC = () => {
                             <Route path='/' element={<ProfileContainer/>}/>
                             <Route path="/profile/:userId?" element={<SuspendedProfile/>}/>
                             <Route path="/dialogs" element={<SuspendedDialogs/>}/>
-                            <Route path="/users" element={<UsersPage pageTitle={'Samurais'}/>}/>
-                            <Route path="/login" element={<LoginPage/>}/>
                             <Route path="/chat" element={<SuspendedChat/>}/>
+                            <Route path="/users" element={<UsersPage pageTitle={'Samurais'}/>}/>
+
+                            <Route path="/login" element={<LoginPage/>}/>
+
                             <Route path='*' element={() => <div>404 NOT FOUND</div>}/>
                         </Routes>
                     </div>

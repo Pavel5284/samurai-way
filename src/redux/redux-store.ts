@@ -1,12 +1,13 @@
-import {applyMiddleware, combineReducers, compose, createStore} from "redux";
+import {Action, applyMiddleware, combineReducers, compose, createStore} from "redux";
 import profileReducer, {ActionsProfileType} from "./profileReducer";
 import dialogReducer, {ActionsDialogsType} from "./dialogsReducer";
 import usersReducer, {ActionsUserType} from "./usersReducer";
 import autReducer, {ActionsAuthType, SetUserDataActionType} from "./authReducer";
-import thunkMiddleware, { ThunkDispatch } from "redux-thunk";
+import thunkMiddleware, {ThunkAction, ThunkDispatch } from "redux-thunk";
 import {reducer as formReducer} from 'redux-form';
 import appReducer, {ActionsAppType, InitializedSuccessActionType} from "./appReducer";
 import {TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
+import {chatReducer} from "./chat-reducer";
 
 export type ActionsTypes =
     ActionsProfileType
@@ -21,7 +22,8 @@ export const rootReducer = combineReducers({
     dialogs: dialogReducer,
     users: usersReducer,
     form: formReducer,
-    app: appReducer
+    app: appReducer,
+    chat: chatReducer
 })
 
 // @ts-ignore
@@ -35,7 +37,10 @@ export type AppDispatch = ThunkDispatch<AppStateRootType, unknown, ActionsTypes>
 export const useAppDispatch = () => useDispatch<AppDispatch>();
 export const useAppSelector: TypedUseSelectorHook<AppStateRootType> = useSelector
 
-//export const store = createStore(rootReducer, applyMiddleware(thunkMiddleware))
+export type InferActionsTypes<T> = T extends { [keys: string]: (...args: any[]) => infer U } ? U : never
+
+export type BaseThunkType<A extends Action = Action, R = Promise<void>> = ThunkAction<R, AppStateRootType, unknown, A>
+
 export type StoreAppType = typeof store
 //@ts-ignore
 window.store = store
