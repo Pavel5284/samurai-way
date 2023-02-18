@@ -10,6 +10,7 @@ import {LoginPage} from './components/Login/LoginPage';
 import {DesktopOutlined, PieChartOutlined, UserOutlined, WechatOutlined} from '@ant-design/icons';
 import { withSuspense } from './hoc/withSuspense';
 import {Preloader} from "../src/components/common/Preloader/Preloader";
+import {PageNotFound} from "./pages/PageNotFound404/PageNotFound404";
 
 
 
@@ -96,7 +97,7 @@ export const App: React.FC = () => {
 
                             <Route path="/login" element={<LoginPage/>}/>
 
-                            <Route path='*' element={() => <div>404 NOT FOUND</div>}/>
+                            <Route path='*' element={<PageNotFound/>}/>
                         </Routes>
                         </Suspense>
                     </div>
